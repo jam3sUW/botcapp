@@ -1,0 +1,41 @@
+import { type GrimAction, type GrimState} from "./Grimoire";
+import { characters } from "./Characters";
+import { generateBluffs, validBluffs } from "./Bluffs";
+
+interface BluffManagerProps {
+    dispatch: React.Dispatch<GrimAction>
+    state: GrimState
+}
+
+export default function BluffManager({ dispatch, state }: BluffManagerProps) {
+    return (
+        <div>
+             <button onClick={() => dispatch({ type: "addBluffSet", characterIds: ["", "", ""] })}>Add bluffs</button>
+            {state.bluffSets.map(bluffSet =>
+                <ul key={bluffSet.id}>
+                    {bluffSet.characterIds.map((characterId, index) => (
+                        <select
+                            value={characterId}
+                            onChange={(e) => {
+                                const newIds = [ ...bluffSet.characterIds]
+                                newIds[index] = e.target.value
+                                dispatch({ type: "updateBluffSet", id: bluffSet.id, characterIds: newIds})
+                            }}
+                        >
+                            <option value="" disabled>Choose...</option>
+                            {validBluffs(state).map(id => (
+                                <option key={id} value={id}>
+                                    {characters[id].name}
+                                </option>
+                            ))}
+                        </select>
+                    ))}
+                    <li>
+                        <button onClick={() => dispatch({ type: "updateBluffSet", id: bluffSet.id, characterIds: generateBluffs(state)})}>Auto bluffs</button>
+                        <button onClick={() => dispatch({ type: "removeBluffSet", id: bluffSet.id})}>Remove bluffs</button>
+                    </li>
+                </ul>
+            )}
+        </div>
+    )
+}
