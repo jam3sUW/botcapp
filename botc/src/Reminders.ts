@@ -1,4 +1,4 @@
-import { characters } from "./Characters"
+import { getCharacter } from "./Characters"
 import type { GrimState } from "./Grimoire"
 
 export interface Reminder {
@@ -15,8 +15,9 @@ const ALWAYS_REMINDERS: Omit<Reminder, "id">[] = [
 export function scriptReminders(state: GrimState) : Omit<Reminder, "id">[] {
     const reminders: Omit<Reminder, "id">[] = [...ALWAYS_REMINDERS]
     state.script.characterIds.forEach((id) => {
-        characters[id].reminders?.forEach((reminder) => {reminders.push({ text: reminder, originId: id })})
-        characters[id].globalReminders?.forEach((reminder) => {reminders.push({ text: reminder, originId: "global" })})
+        const character = getCharacter(id)
+        character?.reminders?.forEach((reminder) => {reminders.push({ text: reminder, originId: id })})
+        character?.globalReminders?.forEach((reminder) => {reminders.push({ text: reminder, originId: "global" })})
     })
     return reminders
 }

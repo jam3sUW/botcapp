@@ -1,6 +1,6 @@
 import type { GrimState } from "./Grimoire"
 import { nRandom } from "./Utils"
-import { characters } from "./Characters"
+import { getCharacter } from "./Characters"
 
 export interface BluffSet {
     id: string
@@ -8,12 +8,18 @@ export interface BluffSet {
 }
 
 export function validBluffs(state: GrimState) : string[] {
-    return state.script.characterIds.filter(id => characters[id].characterType === "townsfolk" || characters[id].characterType === "outsider")
+    return state.script.characterIds.filter(id => {
+        const character = getCharacter(id)
+        return character != undefined && (character.characterType === "townsfolk" || character.characterType === "outsider")
+    })
 }
 
 export function eligibleBluffs(state: GrimState) : string[] {
     const inPlayIds = new Set(state.tokens.map(token => token.character.id))
-    return state.script.characterIds.filter(id => !inPlayIds.has(id) && (characters[id].characterType === "townsfolk" || characters[id].characterType === "outsider"))
+    return state.script.characterIds.filter(id => {
+        const character = getCharacter(id)
+        return character != undefined && !inPlayIds.has(id) && (character.characterType === "townsfolk" || character.characterType === "outsider")
+    })
 }
 
 export function generateBluffs(state: GrimState) : string[] {
