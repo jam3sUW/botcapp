@@ -50,7 +50,7 @@ function InteractiveGrimoire() {
             <h2>Tokens:</h2>
             <ul>
                 {sortedTokens.map(token => (
-                    <Token dispatch={dispatch} token={token} state={state}/>
+                    <Token key={token.id} dispatch={dispatch} token={token} state={state}/>
                 ))}
             </ul>
             

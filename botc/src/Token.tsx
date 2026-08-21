@@ -10,7 +10,7 @@ interface TokenProps {
 
 export default function Token({ dispatch, token, state }: TokenProps) {
     return (
-        <li key={token.id}>
+        <li>
             {formatToken(token)}
             <br/>
             {token.isAlive ? 

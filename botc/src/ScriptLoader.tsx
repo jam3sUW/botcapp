@@ -21,7 +21,7 @@ export default function ScriptLoader({ dispatch }: ScriptLoaderProps) {
             const script = loadScript(jsonContent)
             dispatch({ type: "setScript", script: script})
             setError(null)
-        } catch(err) {
+        } catch {
             setError("Invalid  or corrupt file!")
         }
     }

@@ -102,8 +102,8 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
             return { ...state, tokens: state.tokens.map(token => token.id === action.id ? replaceToken(token, character) : token) }
         }
         case "swapSeats":
-            const id1Seat = state.tokens.find(token => token.id === action.tokenId1)?.seat || -1
-            const id2Seat = state.tokens.find(token => token.id === action.tokenId2)?.seat || -1
+            const id1Seat = state.tokens.find(token => token.id === action.tokenId1)?.seat ?? -1
+            const id2Seat = state.tokens.find(token => token.id === action.tokenId2)?.seat ?? -1
             return { ...state, tokens: state.tokens.map(token => 
                 token.id === action.tokenId1 ?
                     { ...token, seat: id2Seat }
