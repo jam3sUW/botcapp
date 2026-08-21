@@ -53,5 +53,9 @@ export function loadCharacters() : Record<string, Character> {
     return Object.fromEntries(idMap)
 }
 
-export const characters = loadCharacters()
+const characters = loadCharacters()
 export const fabledLorics = Object.values(characters).filter(char => char.characterType === "fabled" || char.characterType === "loric").map(char => char.name)
+
+export function getCharacter(id : string) : Character | undefined{
+    return characters[id]
+}

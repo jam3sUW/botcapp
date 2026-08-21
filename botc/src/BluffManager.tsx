@@ -1,5 +1,5 @@
 import { type GrimAction, type GrimState} from "./Grimoire";
-import { characters } from "./Characters";
+import { getCharacter } from "./Characters";
 import { generateBluffs, validBluffs } from "./Bluffs";
 
 interface BluffManagerProps {
@@ -23,11 +23,13 @@ export default function BluffManager({ dispatch, state }: BluffManagerProps) {
                             }}
                         >
                             <option value="" disabled>Choose...</option>
-                            {validBluffs(state).map(id => (
+                            {validBluffs(state).map(id => {
+                                const character = getCharacter(id)
+                                return (
                                 <option key={id} value={id}>
-                                    {characters[id].name}
+                                    {character?.name ?? "Unknown character"}
                                 </option>
-                            ))}
+                            )})}
                         </select>
                     ))}
                     <li>

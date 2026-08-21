@@ -1,5 +1,5 @@
 import { actsOnFirstNight, actsOnOtherNight, killToken, reviveToken, toggleTokenDeadVote, rotateToken, type Token, addReminder, removeReminder, replaceToken } from "./Tokens"
-import { characters } from "./Characters"
+import { getCharacter } from "./Characters"
 import type { Script } from "./Scripts"
 import type { BluffSet } from "./Bluffs"
 
@@ -73,7 +73,7 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
         case "removeToken":
             return { ...state, tokens: state.tokens.filter(token => token.id != action.id) }
         case "addToken":
-            const character = characters[action.characterId]
+            const character = getCharacter(action.characterId)
             if (character == undefined) {
                 return state
             }
@@ -96,8 +96,11 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
             return { ...state, tokens: state.tokens.map(token => token.id === action.id ? toggleTokenDeadVote(token) : token) }
         case "rotateToken":
             return { ...state, tokens: state.tokens.map(token => token.id === action.id ? rotateToken(token) : token) }
-        case "replaceToken":
-            return { ...state, tokens: state.tokens.map(token => token.id === action.id ? replaceToken(token, characters[action.characterId]) : token) }
+        case "replaceToken": {
+            const character = getCharacter(action.characterId)
+            if (character == undefined) return state
+            return { ...state, tokens: state.tokens.map(token => token.id === action.id ? replaceToken(token, character) : token) }
+        }
         case "swapSeats":
             const id1Seat = state.tokens.find(token => token.id === action.tokenId1)?.seat || -1
             const id2Seat = state.tokens.find(token => token.id === action.tokenId2)?.seat || -1

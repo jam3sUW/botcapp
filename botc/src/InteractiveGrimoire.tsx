@@ -2,7 +2,7 @@ import { useEffect, useReducer } from "react";
 import { useState } from "react";
 import { aliveCount, availableVotes, blockVotes, exileVotes, firstNightOrder, historyReducer, initialGrimState, otherNightOrder } from "./Grimoire";
 import ScriptLoader from "./ScriptLoader";
-import { characters, fabledLorics } from "./Characters";
+import { getCharacter, fabledLorics, type Character } from "./Characters";
 import BluffManager from "./BluffManager";
 import Token from "./Token";
 import { getInPlayJinxes } from "./Jinxes";
@@ -31,9 +31,9 @@ function InteractiveGrimoire() {
             <button onClick={() => dispatch({ type: "addToken", id: crypto.randomUUID(), characterId: chosenChar, name: chosenName })}>Add token</button>
             <select value={chosenChar} onChange={(e) => setChosenChar(e.target.value)}>
                 <option value="" disabled>Select a character...</option>
-                {state.script.characterIds.filter(id => characters[id].characterType != "fabled" && characters[id].characterType != "loric").map(id =>
-                    <option key={id} value={id}>
-                        {characters[id].name}
+                {state.script.characterIds.map(id => getCharacter(id)).filter((character): character is Character => character != undefined && character.characterType != "fabled" && character.characterType != "loric").map(character =>
+                    <option key={character.id} value={character.id}>
+                        {character.name}
                     </option>
                 )}
             </select>
@@ -101,11 +101,17 @@ function InteractiveGrimoire() {
             {inPlayJinxes.length > 0 && <div>
                 <h2>Jinxes</h2>
                 <ul>
-                    {inPlayJinxes.map(jinx => 
+                    {inPlayJinxes.map(jinx => {
+                        const character1 = getCharacter(jinx.characterId1)
+                        const character2 = getCharacter(jinx.characterId2)
+                        if (character1 == undefined || character2 == undefined) {
+                            return null
+                        }
+                        return (
                         <li key={`${jinx.characterId1}-${jinx.characterId2}`}>
-                            {characters[jinx.characterId1].name + " + " + characters[jinx.characterId2].name + ": " + jinx.reason}
+                            {character1.name + " + " + character2.name + ": " + jinx.reason}
                         </li>
-                    )}
+                    )})}
                 </ul>
             </div>}
         </div>
