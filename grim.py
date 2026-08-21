@@ -1,5 +1,6 @@
 from tokens import Token
-from character import Character, load_characters
+from scripts import Script
+from characters import Character, load_characters
 from pathlib import Path
 from typing import Optional
 
@@ -8,8 +9,9 @@ DATA_PATH = Path(__file__).parent / "data" / "characters.json"
 class Grim:
     characters = load_characters(DATA_PATH)
 
-    def __init__(self):
+    def __init__(self, script : Script):
         self.tokens = []
+        self.script = script
 
     def __str__(self):
         return str(self.tokens)

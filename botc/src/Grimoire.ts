@@ -48,7 +48,7 @@ export function otherNightOrder(tokens: Token[]) : Token[] {
 }
 
 export type GrimAction =
-    | { type: "addToken"; characterId: string; name?: string }
+    | { type: "addToken"; id: string, characterId: string; name?: string }
     | { type: "removeToken"; id: string }
     | { type: "clear" }
     | { type: "killToken"; id: string }
@@ -58,12 +58,12 @@ export type GrimAction =
     | { type: "replaceToken"; id: string, characterId: string}
     | { type: "swapSeats"; tokenId1: string, tokenId2: string}
     | { type: "setScript"; script: Script}
-    | { type: "addBluffSet"; characterIds: string[]}
+    | { type: "addBluffSet"; id: string, characterIds: string[]}
     | { type: "updateBluffSet"; id: string, characterIds: string[]}
     | { type: "removeBluffSet"; id: string}
     | { type: "addFabledLoric"; characterId: string}
     | { type: "removeFabledLoric"; characterId: string}
-    | { type: "addReminder"; text: string, tokenId: string, originId: string}
+    | { type: "addReminder"; id: string, text: string, tokenId: string, originId: string}
     | { type: "removeReminder"; reminderId: string, tokenId: string}
 
 export function grimActionReducer(state: GrimState, action: GrimAction): GrimState {
@@ -78,7 +78,7 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
                 return state
             }
             const newToken = {
-                id: crypto.randomUUID(),
+                id: action.id,
                 character: character,
                 name: action.name,
                 seat: state.tokens.length,
@@ -111,7 +111,7 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
         case "setScript":
             return { ...state, script: action.script}
         case "addBluffSet":
-            return { ...state, bluffSets: [ ...state.bluffSets, { id: crypto.randomUUID(), characterIds: action.characterIds }]}
+            return { ...state, bluffSets: [ ...state.bluffSets, { id: action.id, characterIds: action.characterIds }]}
         case "updateBluffSet":
             return { ...state, bluffSets: state.bluffSets.map(bluffSet => bluffSet.id === action.id ? { id: bluffSet.id, characterIds: action.characterIds } : bluffSet)}
         case "removeBluffSet":
@@ -121,7 +121,7 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
         case "removeFabledLoric":
             return { ...state, fabledLorics: state.fabledLorics.filter(fabledLoric => fabledLoric != action.characterId) }
         case "addReminder":
-            return { ...state, tokens: state.tokens.map(token => token.id === action.tokenId ? addReminder(token, { id: crypto.randomUUID(), text: action.text, originId: action.originId }) : token) }
+            return { ...state, tokens: state.tokens.map(token => token.id === action.tokenId ? addReminder(token, { id: action.id, text: action.text, originId: action.originId }) : token) }
         case "removeReminder":
             return { ...state, tokens: state.tokens.map(token => token.id === action.tokenId ? removeReminder(token, action.reminderId) : token)}
     }

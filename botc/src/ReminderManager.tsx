@@ -24,7 +24,7 @@ export default function ReminderManager({ dispatch, state, token }: ReminderMana
             </select>
             <button disabled={chosenReminder === ""} onClick={() => {
                 const parsedReminder = JSON.parse(chosenReminder)
-                dispatch({ type: "addReminder", text: parsedReminder.text, tokenId: token.id, originId: parsedReminder.originId})
+                dispatch({ type: "addReminder", id: crypto.randomUUID(), text: parsedReminder.text, tokenId: token.id, originId: parsedReminder.originId})
             }}>Add reminder</button>
             <br/>
             <ul>

@@ -10,7 +10,7 @@ interface BluffManagerProps {
 export default function BluffManager({ dispatch, state }: BluffManagerProps) {
     return (
         <div>
-             <button onClick={() => dispatch({ type: "addBluffSet", characterIds: ["", "", ""] })}>Add bluffs</button>
+             <button onClick={() => dispatch({ type: "addBluffSet", id: crypto.randomUUID(), characterIds: ["", "", ""] })}>Add bluffs</button>
             {state.bluffSets.map(bluffSet =>
                 <ul key={bluffSet.id}>
                     {bluffSet.characterIds.map((characterId, index) => (

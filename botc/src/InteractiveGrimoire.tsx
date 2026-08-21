@@ -28,7 +28,7 @@ function InteractiveGrimoire() {
 
             <ScriptLoader dispatch={dispatch}/>
 
-            <button onClick={() => dispatch({ type: "addToken", characterId: chosenChar, name: chosenName })}>Add token</button>
+            <button onClick={() => dispatch({ type: "addToken", id: crypto.randomUUID(), characterId: chosenChar, name: chosenName })}>Add token</button>
             <select value={chosenChar} onChange={(e) => setChosenChar(e.target.value)}>
                 <option value="" disabled>Select a character...</option>
                 {state.script.characterIds.filter(id => characters[id].characterType != "fabled" && characters[id].characterType != "loric").map(id =>
