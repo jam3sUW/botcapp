@@ -35,6 +35,10 @@ I wanted a grim tool optimized for local play with features other (excellent!) t
 
 React, TypeScript, Vite. Character/script data vendored locally from [Pocket Grimoire](https://github.com/Skateside/pocket-grimoire)'s excellent dataset rather than fetched at runtime.
 
+## AI disclosure
+
+**All code within was written by me by hand.** However, AI was used in planning architecture and identifying bugs. This is my first significant web project, so I relied on the help and got rather savvy with it. Thank you for bearing with me.
+
 ## Running locally
 
 ```bash
