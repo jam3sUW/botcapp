@@ -6,7 +6,7 @@ A browser-based "Grimoire" (storyteller's tool) for running games of [Blood on t
 
 ## Purpose
 
-I wanted a grim tool optimized for local play with features other (excellent!) tools lack. Specifically auto-resolution, offline modes, and co-storytelling support. I run games for the 100+ member university club I founded, so I'm builing the tool I want to use.
+I wanted a grim tool optimized for local play with features other (excellent!) tools lack. Specifically auto-resolution, offline modes, and co-storytelling support. I run games for the 100+ member university club I founded, so I'm building the tool I want to use.
 
 ## Current features
 
