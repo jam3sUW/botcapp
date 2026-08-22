@@ -1,32 +1,42 @@
-# React + TypeScript + Vite
+# Blood on the Clocktower Grimoire
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A browser-based "Grimoire" (storyteller's tool) for running games of [Blood on the Clocktower](https://bloodontheclocktower.com/) — built because the existing digital tools were missing features I wanted for running games with my club.
 
-Currently, two official plugins are available:
+**Status: work in progress.** Core state management and a functional token/script/bluff/reminder UI are working; seating layout, drag-and-drop, and the multiplayer stretch goal are not built yet.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Why
 
-## React Compiler
+Existing Grimoire tools are either paid, missing script/homebrew support, or don't track the things I actually want tracked as a storyteller (reminder tokens, bluffs, jinxes between characters in play). I run games for a 100+ member university club, so I built the tool I wanted to use.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## What it does today
 
-## Expanding the Oxlint configuration
+- Add, remove, kill, revive, and rotate tokens on the board
+- Load an official script (or upload a custom/homebrew script as JSON) and scope character selection to it
+- Auto-generate demon bluffs, with a manual override
+- Track and add per-character and global reminder tokens
+- Surface jinxes between characters currently in play
+- Full undo/redo history
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## What's planned
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+- Seating layout and drag-and-drop token positioning
+- Automatic role assignment and step-by-step storyteller instructions
+- Offline support as an installable PWA
+- Stretch goal: host-authoritative online play (one browser hosts, others connect in)
+
+## Architecture notes
+
+- State is managed with a single `useReducer` over a discriminated-union `GrimAction` type, with an undo/redo history wrapper around it.
+- All actions are plain, JSON-serializable data — no functions or class instances — a constraint driven by the multiplayer stretch goal above: if state ever needs to sync across a host and connected clients, every action has to survive being sent over the wire and replayed deterministically.
+- Game logic was first prototyped in Python (see `/prototype`) to work out the data model before committing to the TypeScript/React rewrite.
+
+## Tech stack
+
+React, TypeScript, Vite. Character/script data vendored locally from [a community-maintained BotC roles dataset](#) rather than fetched at runtime.
+
+## Running locally
+
+```bash
+npm install
+npm run dev
 ```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
