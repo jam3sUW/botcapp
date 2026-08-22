@@ -15,7 +15,7 @@ export default function BluffManager({ dispatch, state }: BluffManagerProps) {
                 <ul key={bluffSet.id}>
                     <li key={bluffSet.id}>
                         {bluffSet.characterIds.map((characterId, index) => (
-                                <select
+                                <select key={index}
                                     value={characterId}
                                     onChange={(e) => {
                                         const newIds = [ ...bluffSet.characterIds]

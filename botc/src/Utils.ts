@@ -11,8 +11,8 @@ export function nRandom<T>(items: T[], count: number) : T[] {
     for (let i = n - 1; i >= n - k; i--) {
         const j = Math.floor(Math.random() * (i + 1))
 
-        const valI = map.has(i) ? map.get(i)! : items[i]
-        const valJ = map.has(j) ? map.get(j)! : items[j]
+        const valI = map.has(i) ? map.get(i)! : items[i]!
+        const valJ = map.has(j) ? map.get(j)! : items[j]!
 
         arr.push(valJ)
         map.set(j, valI)

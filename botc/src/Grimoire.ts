@@ -10,7 +10,7 @@ export interface GrimState {
     bluffSets: BluffSet[]
 }
 
-export interface historyState {
+export interface HistoryState {
     past: GrimState[]
     present: GrimState
     future: GrimState[]
@@ -140,11 +140,11 @@ export type HistoryAction =
     | { type: "redo" }
     | GrimAction
 
-export function historyReducer(state: historyState, action: HistoryAction) {
+export function historyReducer(state: HistoryState, action: HistoryAction) : HistoryState {
     switch (action.type) {
         case "undo":
             if (state.past.length === 0 ) { return state }
-            const pastGrimState = state.past[state.past.length - 1]
+            const pastGrimState = state.past[state.past.length - 1]!
             return {
                 past: state.past.slice(0, -1),
                 present: pastGrimState,
@@ -152,7 +152,7 @@ export function historyReducer(state: historyState, action: HistoryAction) {
             }
         case "redo":
             if (state.future.length === 0) { return state }
-            const futureGrimState = state.future[0]
+            const futureGrimState = state.future[0]!
             return {
                 past: [...state.past, state.present],
                 present: futureGrimState,

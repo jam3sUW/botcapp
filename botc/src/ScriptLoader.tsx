@@ -14,6 +14,7 @@ export default function ScriptLoader({ dispatch }: ScriptLoaderProps) {
         if (!files || files.length === 0) return;
 
         const file = files[0]
+        if (!file) return
 
         try {
             const content = await file.text()
