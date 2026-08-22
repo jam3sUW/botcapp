@@ -1,38 +1,39 @@
-# Blood on the Clocktower Grimoire
+# Blood on the Clocktower Grimoire (Name WIP)
 
-A browser-based "Grimoire" (storyteller's tool) for running games of [Blood on the Clocktower](https://bloodontheclocktower.com/) — built because the existing digital tools were missing features I wanted for running games with my club.
+A browser-based "Grimoire" (storyteller's tool) for running games of [Blood on the Clocktower](https://bloodontheclocktower.com/), built for my uni's BOTC club.
 
-**Status: work in progress.** Core state management and a functional token/script/bluff/reminder UI are working; seating layout, drag-and-drop, and the multiplayer stretch goal are not built yet.
+**Status: EXTREMELY work in progress.** Barely anything is done. Core state management and a functional token/script/bluff/reminder UI are working. Fancy stuff forthcoming.
 
 ## Why
 
-Existing Grimoire tools are either paid, missing script/homebrew support, or don't track the things I actually want tracked as a storyteller (reminder tokens, bluffs, jinxes between characters in play). I run games for a 100+ member university club, so I built the tool I wanted to use.
+I wanted a grim tool optimized for local play with features other (excellent!) tools lack. Specifically auto-resolution, offline modes, and co-storytelling support. I run games for the 100+ member university club I founded, so I'm builing the tool I want to use.
 
-## What it does today
+## Current features
 
 - Add, remove, kill, revive, and rotate tokens on the board
-- Load an official script (or upload a custom/homebrew script as JSON) and scope character selection to it
-- Auto-generate demon bluffs, with a manual override
+- Load offical and custom scripts (but not homebrew, yet) and scope character selection to it
+- Bluff support with auto-generation
 - Track and add per-character and global reminder tokens
-- Surface jinxes between characters currently in play
-- Full undo/redo history
+- View in-play jinxes
+- Full undo/redo history!
 
-## What's planned
+## Planned features
 
-- Seating layout and drag-and-drop token positioning
-- Automatic role assignment and step-by-step storyteller instructions
+- MAJOR UI OVERHAULS FOR EVERYTHING
+- Automatic role assignment
+- Step-by-step storyteller instructions and auto-resolution
 - Offline support as an installable PWA
-- Stretch goal: host-authoritative online play (one browser hosts, others connect in)
+- Online support for co-storytelling
 
 ## Architecture notes
 
 - State is managed with a single `useReducer` over a discriminated-union `GrimAction` type, with an undo/redo history wrapper around it.
-- All actions are plain, JSON-serializable data — no functions or class instances — a constraint driven by the multiplayer stretch goal above: if state ever needs to sync across a host and connected clients, every action has to survive being sent over the wire and replayed deterministically.
-- Game logic was first prototyped in Python (see `/prototype`) to work out the data model before committing to the TypeScript/React rewrite.
+- All actions are plain, deterministic JSON to support future multiplayer features.
+- Game logic was first prototyped in Python (see `/prototype`) as I figured out the shape of things.
 
 ## Tech stack
 
-React, TypeScript, Vite. Character/script data vendored locally from [a community-maintained BotC roles dataset](#) rather than fetched at runtime.
+React, TypeScript, Vite. Character/script data vendored locally from [Pocket Grimoire](https://github.com/Skateside/pocket-grimoire)'s excellent dataset rather than fetched at runtime.
 
 ## Running locally
 
