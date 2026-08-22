@@ -16,11 +16,13 @@ export interface HistoryState {
     future: GrimState[]
 }
 
-export const initialGrimState: GrimState = {
-    tokens: [],
-    fabledLorics: [],
-    script: { characterIds: [], name: "No Script", author: "" },
-    bluffSets: [{id: crypto.randomUUID(), characterIds: ["", "", ""] }],
+export function generateInitialGrimState(): GrimState {
+    return {
+        tokens: [],
+        fabledLorics: [],
+        script: { characterIds: [], name: "No Script", author: "" },
+        bluffSets: [{id: crypto.randomUUID(), characterIds: ["", "", ""] }],
+    }
 }
 
 export function aliveCount(tokens: Token[]) : number {

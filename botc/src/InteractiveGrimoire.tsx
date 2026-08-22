@@ -1,6 +1,6 @@
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import { useState } from "react";
-import { aliveCount, availableVotes, blockVotes, exileVotes, firstNightOrder, historyReducer, initialGrimState, otherNightOrder } from "./Grimoire";
+import { aliveCount, availableVotes, blockVotes, exileVotes, firstNightOrder, historyReducer, generateInitialGrimState, otherNightOrder } from "./Grimoire";
 import ScriptLoader from "./ScriptLoader";
 import { getCharacter, fabledLorics, type Character } from "./Characters";
 import BluffManager from "./BluffManager";
@@ -8,18 +8,12 @@ import Token from "./Token";
 import { getInPlayJinxes } from "./Jinxes";
 
 function InteractiveGrimoire() {
-    const [{ present: state, past, future }, dispatch] = useReducer(historyReducer, { past: [], present: initialGrimState, future: []})
+    const [{ present: state, past, future }, dispatch] = useReducer(historyReducer, { past: [], present: generateInitialGrimState(), future: []})
     const [chosenChar, setChosenChar] = useState("")
     const [chosenName, setChosenName] = useState("")
     const [chosenFabledLoric, setChosenFabledLoric] = useState("")
     const sortedTokens = [...state.tokens].sort((a, b) => (a.seat ?? 999) - (b.seat ?? 999))
     const inPlayJinxes = getInPlayJinxes(state)
-
-    // Temporary backdoor for console testing
-    useEffect(() => {
-        (window as any).testDispatch = dispatch;
-        (window as any).testState = state;
-    }, [state, dispatch]);
 
     return (
         <div>
