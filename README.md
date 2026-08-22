@@ -2,9 +2,9 @@
 
 A browser-based "Grimoire" (storyteller's tool) for running games of [Blood on the Clocktower](https://bloodontheclocktower.com/), built for my uni's BOTC club.
 
-**Status: EXTREMELY work in progress.** Barely anything is done. Core state management and a functional token/script/bluff/reminder UI are working. Fancy stuff forthcoming.
+**EXTREMELY work in progress.** Barely anything is done. Core state management and a functional token/script/bluff/reminder UI are working. Fancy stuff forthcoming...
 
-## Why
+## Purpose
 
 I wanted a grim tool optimized for local play with features other (excellent!) tools lack. Specifically auto-resolution, offline modes, and co-storytelling support. I run games for the 100+ member university club I founded, so I'm builing the tool I want to use.
 
