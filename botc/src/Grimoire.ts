@@ -69,9 +69,14 @@ export type GrimAction =
 export function grimActionReducer(state: GrimState, action: GrimAction): GrimState {
     switch (action.type) {
         case "clear":
-            return { ...state, tokens: [], bluffSets: [] }
-        case "removeToken":
-            return { ...state, tokens: state.tokens.filter(token => token.id != action.id) }
+            return { ...state, tokens: [], fabledLorics: [], bluffSets: [] }
+        case "removeToken": {
+            const newSeating = state.tokens
+                .filter(token => token.id !== action.id)
+                .sort((a, b) => (a.seat ?? 0) - (b.seat ?? 0))
+                .map((token, index) => ({ ...token, seat: index }))
+            return { ...state, tokens: newSeating }
+        }
         case "addToken":
             const character = getCharacter(action.characterId)
             if (character == undefined) {
