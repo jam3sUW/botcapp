@@ -6,6 +6,7 @@ import { getCharacter, fabledLorics, type Character } from "./Characters";
 import BluffManager from "./BluffManager";
 import Token from "./Token";
 import { getInPlayJinxes } from "./Jinxes";
+import "./InteractiveGrimoire.css"
 
 function InteractiveGrimoire() {
     const [{ present: state, past, future }, dispatch] = useReducer(historyReducer, { past: [], present: generateInitialGrimState(), future: []})
@@ -42,7 +43,7 @@ function InteractiveGrimoire() {
             <p>Votes to exile: {exileVotes(state.tokens)}</p>
 
             <h2>Tokens:</h2>
-            <ul>
+            <ul className="token-list">
                 {sortedTokens.map(token => (
                     <Token key={token.id} dispatch={dispatch} token={token} state={state}/>
                 ))}
