@@ -1,4 +1,5 @@
 import characterData from "./data/characters.json"
+import nightOrderData from "./data/nightsheet.json"
 
 export interface Character {
     id: string
@@ -6,13 +7,12 @@ export interface Character {
     characterType: string
     ability: string
     edition?: string
-    firstNightOrder: number
-    otherNightOrder: number
     setup: boolean
     firstNightInstruction?: string
     otherNightInstruction?: string
     reminders?: string[]
     globalReminders?: string[]
+    flavor?: string
 }
 
 interface RawCharacter {
@@ -21,13 +21,12 @@ interface RawCharacter {
     team: string
     ability: string
     edition?: string
-    firstNight?: number
-    otherNight?: number
     setup?: boolean
     firstNightReminder?: string
     otherNightReminder?: string
     reminders?: string[]
     remindersGlobal?: string[]
+    flavor?: string
 }
 
 function characterFromRaw(data: RawCharacter) : Character {
@@ -37,17 +36,16 @@ function characterFromRaw(data: RawCharacter) : Character {
         characterType: data.team,
         ability: data.ability,
         edition: data.edition,
-        firstNightOrder: data.firstNight ?? 0,
-        otherNightOrder: data.otherNight ?? 0,
         setup: data.setup ?? false,
         firstNightInstruction: data.firstNightReminder,
         otherNightInstruction: data.otherNightReminder,
         reminders: data.reminders,
-        globalReminders: data.remindersGlobal
+        globalReminders: data.remindersGlobal,
+        flavor: data.flavor
     }
 }
 
-export function loadCharacters() : Record<string, Character> {
+function loadCharacters() : Record<string, Character> {
     const processedCharacterData = characterData.map(characterFromRaw)
     const idMap = processedCharacterData.map((char) : [string, Character] => [char.id, char])
     return Object.fromEntries(idMap)
@@ -56,6 +54,28 @@ export function loadCharacters() : Record<string, Character> {
 const characters = loadCharacters()
 export const fabledLorics = Object.values(characters).filter(char => char.characterType === "fabled" || char.characterType === "loric").map(char => char.name)
 
-export function getCharacter(id : string) : Character | undefined{
+export function getCharacter(id : string) : Character | undefined {
     return characters[id]
+}
+
+export interface NightOrder {
+    firstNight: Record<string, number>
+    otherNight: Record<string, number>
+}
+
+export function loadNightOrder(): NightOrder {
+    return {
+        firstNight: Object.fromEntries(nightOrderData.firstNight.map((id, index) => [id, index])),
+        otherNight: Object.fromEntries(nightOrderData.otherNight.map((id, index) => [id, index]))
+    }
+}
+
+const nightOrder = loadNightOrder()
+
+export function getFirstNightOrder(id : string) : number | undefined  {
+    return nightOrder.firstNight[id]
+}
+
+export function getOtherNightOrder(id : string) : number | undefined {
+    return nightOrder.otherNight[id]
 }

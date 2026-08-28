@@ -1,5 +1,5 @@
 import { actsOnFirstNight, actsOnOtherNight, killToken, reviveToken, toggleTokenDeadVote, rotateToken, type Token, addReminder, removeReminder, replaceToken } from "./Tokens"
-import { getCharacter } from "./Characters"
+import { getCharacter, getFirstNightOrder, getOtherNightOrder } from "./Characters"
 import type { Script } from "./Scripts"
 import type { BluffSet } from "./Bluffs"
 
@@ -42,11 +42,11 @@ export function exileVotes(tokens: Token[]) : number {
 }
 
 export function firstNightOrder(tokens: Token[]) : Token[] {
-    return tokens.filter(actsOnFirstNight).toSorted((a, b) => a.character.firstNightOrder - b.character.firstNightOrder)
+    return tokens.filter(actsOnFirstNight).toSorted((a, b) => getFirstNightOrder(a.character.id)! - getFirstNightOrder(b.character.id)!)
 }
 
 export function otherNightOrder(tokens: Token[]) : Token[] {
-    return tokens.filter(actsOnOtherNight).toSorted((a, b) => a.character.otherNightOrder - b.character.otherNightOrder)
+    return tokens.filter(actsOnOtherNight).toSorted((a, b) => getOtherNightOrder(a.character.id)! - getOtherNightOrder(b.character.id)!)
 }
 
 export type GrimAction =

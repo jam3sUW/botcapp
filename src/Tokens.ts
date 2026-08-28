@@ -1,4 +1,4 @@
-import type { Character } from "./Characters"
+import { getFirstNightOrder, getOtherNightOrder, type Character } from "./Characters"
 import type { Reminder } from "./Reminders"
 
 export interface Token {
@@ -56,9 +56,9 @@ export function formatToken(token: Token): string {
 }
 
 export function actsOnFirstNight(token: Token): boolean {
-    return token.isAlive && token.character.firstNightOrder !== 0
+    return token.isAlive && getFirstNightOrder(token.character.id) !== undefined
 }
 
 export function actsOnOtherNight(token: Token): boolean {
-    return token.isAlive && token.character.otherNightOrder !== 0
+    return token.isAlive && getOtherNightOrder(token.character.id) !== undefined
 }
