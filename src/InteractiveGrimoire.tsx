@@ -42,7 +42,7 @@ function InteractiveGrimoire() {
             <p>Votes to condemn: {blockVotes(state.tokens)}</p>
             <p>Votes to exile: {exileVotes(state.tokens)}</p>
 
-            <h2>Tokens:</h2>
+            <h2>Tokens (click each for options):</h2>
             <ul className="token-list">
                 {sortedTokens.map(token => (
                     <Token key={token.id} dispatch={dispatch} token={token} state={state}/>

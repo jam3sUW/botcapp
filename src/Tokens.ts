@@ -42,7 +42,7 @@ export function removeReminder(token: Token, reminderId: string) {
 }
 
 export function formatToken(token: Token): string {
-    const parts = [token.isAlive ? "Alive" : "Dead", token.character.name]
+    const parts = [token.isAlive ? "" : "Dead", token.character.name]
     if (token.name) {
         parts.push(token.name)
     }
