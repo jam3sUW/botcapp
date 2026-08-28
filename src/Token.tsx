@@ -12,10 +12,11 @@ interface TokenProps {
 
 export default function Token({ dispatch, token, state }: TokenProps) {
     const [selected, setSelected] = useState(false)
+    const imgFilepath = "/assets/characters/" + token.character.edition + "/" + token.character.id + ".webp"
     return (
         <li className="token-row">
             <div className="token-circle" onClick={() => setSelected(!selected)}>
-                <img src="/assets/placeholder.webp"></img>
+                <img src={imgFilepath}></img>
             </div>
             {formatToken(token)}
             {selected && (
