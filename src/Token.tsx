@@ -3,6 +3,7 @@ import { formatToken, type Token } from "./Tokens";
 import ReminderManager from "./ReminderManager";
 import { useState } from "react";
 import "./Token.css"
+import { getCharacter } from "./Characters";
 
 interface TokenProps {
     dispatch: React.Dispatch<GrimAction>
@@ -12,11 +13,12 @@ interface TokenProps {
 
 export default function Token({ dispatch, token, state }: TokenProps) {
     const [selected, setSelected] = useState(false)
-    const imgFilepath = "/assets/characters/" + token.character.edition + "/" + token.character.id + ".webp"
+    const edition = getCharacter(token.characterId)?.edition ?? "homebrew"
+    const imgFilepath = `/assets/characters/${edition}/${token.characterId}.webp`
     return (
         <li className="token-row">
             <div className="token-circle" onClick={() => setSelected(!selected)}>
-                <img src={imgFilepath}></img>
+                <img src={imgFilepath}/>
             </div>
             {formatToken(token)}
             {selected && (

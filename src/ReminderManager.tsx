@@ -18,10 +18,7 @@ export default function ReminderManager({ dispatch, state, token }: ReminderMana
             <select value={chosenReminder} onChange={(e) => setChosenReminder(e.target.value)}>
                 <option value="" disabled>Choose...</option>
                 {scriptReminders(state).map(reminder => {
-                    let name = getCharacter(reminder.originId)?.name
-                    if (name == undefined) {
-                        name = "Global"
-                    }
+                    const name = getCharacter(reminder.originId)?.name ?? "Global"
                     return (
                         <option key={`${name} - ${reminder.text}`} value={JSON.stringify(reminder)}>
                             {name + ": " +reminder.text}
@@ -36,10 +33,7 @@ export default function ReminderManager({ dispatch, state, token }: ReminderMana
             <br/>
             <ul> 
                 {token.reminders.map(reminder => {
-                    let name = getCharacter(reminder.originId)?.name
-                    if (name == undefined) {
-                        name = "Global"
-                    }
+                    const name = getCharacter(reminder.originId)?.name ?? "Global"
                     return (
                          <li key={reminder.id}>
                             {name + ": " + reminder.text}

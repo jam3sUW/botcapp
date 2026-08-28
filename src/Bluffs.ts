@@ -15,7 +15,7 @@ export function validBluffs(state: GrimState) : string[] {
 }
 
 export function eligibleBluffs(state: GrimState) : string[] {
-    const inPlayIds = new Set(state.tokens.map(token => token.character.id))
+    const inPlayIds = new Set(state.tokens.map(token => token.characterId))
     return state.script.characterIds.filter(id => {
         const character = getCharacter(id)
         return character != undefined && !inPlayIds.has(id) && (character.characterType === "townsfolk" || character.characterType === "outsider")

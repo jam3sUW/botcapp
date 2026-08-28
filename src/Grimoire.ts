@@ -42,11 +42,11 @@ export function exileVotes(tokens: Token[]) : number {
 }
 
 export function firstNightOrder(tokens: Token[]) : Token[] {
-    return tokens.filter(actsOnFirstNight).toSorted((a, b) => getFirstNightOrder(a.character.id)! - getFirstNightOrder(b.character.id)!)
+    return tokens.filter(actsOnFirstNight).toSorted((a, b) => getFirstNightOrder(a.characterId)! - getFirstNightOrder(b.characterId)!)
 }
 
 export function otherNightOrder(tokens: Token[]) : Token[] {
-    return tokens.filter(actsOnOtherNight).toSorted((a, b) => getOtherNightOrder(a.character.id)! - getOtherNightOrder(b.character.id)!)
+    return tokens.filter(actsOnOtherNight).toSorted((a, b) => getOtherNightOrder(a.characterId)! - getOtherNightOrder(b.characterId)!)
 }
 
 export type GrimAction =
@@ -80,13 +80,9 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
             return { ...state, tokens: newSeating }
         }
         case "addToken":
-            const character = getCharacter(action.characterId)
-            if (character == undefined) {
-                return state
-            }
             const newToken = {
                 id: action.id,
-                character: character,
+                characterId: action.characterId,
                 name: action.name,
                 seat: state.tokens.length,
                 isAlive: true,
@@ -104,9 +100,7 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
         case "rotateToken":
             return { ...state, tokens: state.tokens.map(token => token.id === action.id ? rotateToken(token) : token) }
         case "replaceToken": {
-            const character = getCharacter(action.characterId)
-            if (character == undefined) return state
-            return { ...state, tokens: state.tokens.map(token => token.id === action.id ? replaceToken(token, character) : token) }
+            return { ...state, tokens: state.tokens.map(token => token.id === action.id ? replaceToken(token, action.characterId) : token) }
         }
         case "swapSeats":
             const id1Seat = state.tokens.find(token => token.id === action.tokenId1)?.seat ?? -1

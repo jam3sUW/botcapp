@@ -24,7 +24,7 @@ export function getScriptJinxes(state: GrimState) : Jinx[] {
 
 export function getInPlayJinxes(state: GrimState) : Jinx[] {
     const jinxes : Jinx[] = []
-    const inPlayIds = new Set(state.tokens.map(token => token.character.id))
+    const inPlayIds = new Set(state.tokens.map(token => token.characterId))
     jinxData.forEach(character => {
         if (inPlayIds.has(character.id)) {
             character.jinx.forEach(target => {

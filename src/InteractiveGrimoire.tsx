@@ -51,21 +51,29 @@ function InteractiveGrimoire() {
             
             <h2>First night:</h2>
             <ul>
-                {firstNightOrder(state.tokens).map(token => (
-                    <li key={token.id}>
-                        <strong>{token.character.name}: </strong>
-                        {token.character.firstNightInstruction}
-                    </li>
-                ))}
+                {firstNightOrder(state.tokens).map(token => {
+                    const character = getCharacter(token.characterId)
+                    if (!character) return null
+                    return (
+                        <li key={token.id}>
+                            <strong>{character.name}: </strong>
+                            {character.firstNightInstruction}
+                        </li>
+                    )
+                })}
             </ul>
             <h2>Other night:</h2>
             <ul>
-                {otherNightOrder(state.tokens).map(token => (
-                    <li key={token.id}>
-                        <strong>{token.character.name}: </strong>
-                        {token.character.otherNightInstruction}
-                    </li>
-                ))}
+                {otherNightOrder(state.tokens).map(token => {
+                    const character = getCharacter(token.characterId)
+                    if (!character) return null
+                    return (
+                        <li key={token.id}>
+                            <strong>{character.name}: </strong>
+                            {character.otherNightInstruction}
+                        </li>
+                    )
+                })}
             </ul>
 
            <BluffManager dispatch={dispatch} state={state}/>

@@ -1,9 +1,9 @@
-import { getFirstNightOrder, getOtherNightOrder, type Character } from "./Characters"
+import { getCharacter, getFirstNightOrder, getOtherNightOrder, type Character } from "./Characters"
 import type { Reminder } from "./Reminders"
 
 export interface Token {
     id: string
-    character: Character
+    characterId: string
     name?: string
     seat?: number
     isAlive: boolean
@@ -29,8 +29,8 @@ export function rotateToken(token: Token): Token {
     return { ...token, isRotated: !token.isRotated}
 }
 
-export function replaceToken(token: Token, character: Character): Token {
-    return { ...token, character: character}
+export function replaceToken(token: Token, characterId: string): Token {
+    return { ...token, characterId: characterId}
 }
 
 export function addReminder(token: Token, reminder: Reminder) {
@@ -42,7 +42,8 @@ export function removeReminder(token: Token, reminderId: string) {
 }
 
 export function formatToken(token: Token): string {
-    const parts = [token.isAlive ? "" : "Dead", token.character.name]
+    let name = getCharacter(token.characterId)?.name ?? "Unknown Role"
+    const parts = [token.isAlive ? "" : "Dead", name ]
     if (token.name) {
         parts.push(token.name)
     }
@@ -56,9 +57,9 @@ export function formatToken(token: Token): string {
 }
 
 export function actsOnFirstNight(token: Token): boolean {
-    return token.isAlive && getFirstNightOrder(token.character.id) !== undefined
+    return token.isAlive && getFirstNightOrder(token.characterId) !== undefined
 }
 
 export function actsOnOtherNight(token: Token): boolean {
-    return token.isAlive && getOtherNightOrder(token.character.id) !== undefined
+    return token.isAlive && getOtherNightOrder(token.characterId) !== undefined
 }
