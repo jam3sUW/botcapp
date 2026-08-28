@@ -1,4 +1,4 @@
-import { getCharacter, getFirstNightOrder, getOtherNightOrder, type Character } from "./Characters"
+import { getCharacter, getFirstNightOrder, getOtherNightOrder } from "./Characters"
 import type { Reminder } from "./Reminders"
 
 export interface Token {

@@ -1,5 +1,5 @@
 import { actsOnFirstNight, actsOnOtherNight, killToken, reviveToken, toggleTokenDeadVote, rotateToken, type Token, addReminder, removeReminder, replaceToken } from "./Tokens"
-import { getCharacter, getFirstNightOrder, getOtherNightOrder } from "./Characters"
+import { getFirstNightOrder, getOtherNightOrder } from "./Characters"
 import type { Script } from "./Scripts"
 import type { BluffSet } from "./Bluffs"
 
