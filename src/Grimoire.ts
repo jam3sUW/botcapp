@@ -8,6 +8,7 @@ export interface GrimState {
     fabledLorics: string[]
     script: Script
     bluffSets: BluffSet[]
+    selectedCharacterIds: string[]
 }
 
 export interface HistoryState {
@@ -22,6 +23,7 @@ export function generateInitialGrimState(): GrimState {
         fabledLorics: [],
         script: { characterIds: [], name: "No Script", author: "" },
         bluffSets: [{id: crypto.randomUUID(), characterIds: ["", "", ""] }],
+        selectedCharacterIds: [],
     }
 }
 
@@ -67,11 +69,13 @@ export type GrimAction =
     | { type: "removeFabledLoric"; characterId: string}
     | { type: "addReminder"; id: string, text: string, tokenId: string, originId: string}
     | { type: "removeReminder"; reminderId: string, tokenId: string}
+    | { type: "toggleSelectedCharacterId"; characterId: string }
+    | { type: "clearSelectedCharacterIds" }
 
 export function grimActionReducer(state: GrimState, action: GrimAction): GrimState {
     switch (action.type) {
         case "clear":
-            return { ...state, tokens: [], fabledLorics: [], bluffSets: [] }
+            return { ...state, tokens: [], fabledLorics: [], bluffSets: [], selectedCharacterIds: [], }
         case "removeToken": {
             const newSeating = state.tokens
                 .filter(token => token.id !== action.id)
@@ -128,6 +132,10 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
             return { ...state, tokens: state.tokens.map(token => token.id === action.tokenId ? addReminder(token, { id: action.id, text: action.text, originId: action.originId }) : token) }
         case "removeReminder":
             return { ...state, tokens: state.tokens.map(token => token.id === action.tokenId ? removeReminder(token, action.reminderId) : token)}
+        case "toggleSelectedCharacterId":
+            return { ...state, selectedCharacterIds: state.selectedCharacterIds.includes(action.characterId) ? state.selectedCharacterIds.filter(id => id !== action.characterId) : [...state.selectedCharacterIds, action.characterId]}
+        case "clearSelectedCharacterIds":
+            return { ...state, selectedCharacterIds: [] }
     }
 }
 
