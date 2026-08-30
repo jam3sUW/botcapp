@@ -7,6 +7,7 @@ import BluffManager from "./BluffManager";
 import Token from "./Token";
 import { getInPlayJinxes } from "./Jinxes";
 import "./InteractiveGrimoire.css"
+import CharacterSetup from "./CharacterSetup";
 
 function InteractiveGrimoire() {
     const [{ present: state, past, future }, dispatch] = useReducer(historyReducer, { past: [], present: generateInitialGrimState(), future: []})
@@ -22,6 +23,8 @@ function InteractiveGrimoire() {
             <button disabled={future.length === 0} onClick={() => { dispatch({ type: "redo" }) }}>Redo</button>
 
             <ScriptLoader dispatch={dispatch}/>
+
+            <CharacterSetup></CharacterSetup>
 
             <button onClick={() => dispatch({ type: "addToken", id: crypto.randomUUID(), characterId: chosenChar, name: chosenName })}>Add token</button>
             <select value={chosenChar} onChange={(e) => setChosenChar(e.target.value)}>
