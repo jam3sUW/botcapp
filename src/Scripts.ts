@@ -1,3 +1,5 @@
+import { getCharacter } from "./Characters"
+
 export interface Script {
     characterIds: string[]
     name: string
@@ -51,4 +53,8 @@ const CHARACTER_TYPE_COUNTS: Record<number, CharacterTypeCount> = {
 export function getCharacterTypeCounts(playerCount: number) : CharacterTypeCount {
     playerCount = Math.max(5, Math.min(playerCount, 15))
     return CHARACTER_TYPE_COUNTS[playerCount]!
+}
+
+export function getScriptCharacterTypes(script: Script, type: string) : string[] {
+    return script.characterIds.filter(id => getCharacter(id)?.characterType === type)
 }

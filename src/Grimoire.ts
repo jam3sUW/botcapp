@@ -1,5 +1,5 @@
 import { actsOnFirstNight, actsOnOtherNight, killToken, reviveToken, toggleTokenDeadVote, rotateToken, type Token, addReminder, removeReminder, replaceToken } from "./Tokens"
-import { getFirstNightOrder, getOtherNightOrder } from "./Characters"
+import { getCharacter, getFirstNightOrder, getOtherNightOrder } from "./Characters"
 import type { Script } from "./Scripts"
 import type { BluffSet } from "./Bluffs"
 
@@ -84,6 +84,9 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
             return { ...state, tokens: newSeating }
         }
         case "addToken":
+            if (action.characterId === undefined || getCharacter(action.characterId) === undefined) {
+                return state
+            }
             const newToken = {
                 id: action.id,
                 characterId: action.characterId,
