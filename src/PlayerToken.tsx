@@ -5,13 +5,13 @@ import { useState } from "react";
 import "./Token.css"
 import { getCharacter } from "./Characters";
 
-interface TokenProps {
+interface PlayerTokenProps {
     dispatch: React.Dispatch<GrimAction>
     token: Token
     state: GrimState
 }
 
-export default function Token({ dispatch, token, state }: TokenProps) {
+export default function PlayerToken({ dispatch, token, state }: PlayerTokenProps) {
     const [selected, setSelected] = useState(false)
     const edition = getCharacter(token.characterId)?.edition ?? "homebrew"
     const imgFilepath = `/assets/characters/${edition}/${token.characterId}.webp`

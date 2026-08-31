@@ -4,10 +4,11 @@ import { aliveCount, availableVotes, blockVotes, exileVotes, firstNightOrder, hi
 import ScriptLoader from "./ScriptLoader";
 import { getCharacter, fabledLorics, type Character } from "./Characters";
 import BluffManager from "./BluffManager";
-import Token from "./Token";
+import Token from "./PlayerToken";
 import { getInPlayJinxes } from "./Jinxes";
 import "./InteractiveGrimoire.css"
 import CharacterSetup from "./CharacterSetup";
+import PlayerToken from "./PlayerToken";
 
 function InteractiveGrimoire() {
     const [{ present: state, past, future }, dispatch] = useReducer(historyReducer, { past: [], present: generateInitialGrimState(), future: []})
@@ -48,7 +49,7 @@ function InteractiveGrimoire() {
             <h2>Tokens (click each for options):</h2>
             <ul className="token-list">
                 {sortedTokens.map(token => (
-                    <Token key={token.id} dispatch={dispatch} token={token} state={state}/>
+                    <PlayerToken key={token.id} dispatch={dispatch} token={token} state={state}/>
                 ))}
             </ul>
             
