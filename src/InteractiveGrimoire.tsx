@@ -4,11 +4,10 @@ import { aliveCount, availableVotes, blockVotes, exileVotes, firstNightOrder, hi
 import ScriptLoader from "./ScriptLoader";
 import { getCharacter, fabledLorics, type Character } from "./Characters";
 import BluffManager from "./BluffManager";
-import Token from "./PlayerToken";
+import PlayerToken from "./PlayerToken";
 import { getInPlayJinxes } from "./Jinxes";
 import "./InteractiveGrimoire.css"
 import CharacterSetup from "./CharacterSetup";
-import PlayerToken from "./PlayerToken";
 
 function InteractiveGrimoire() {
     const [{ present: state, past, future }, dispatch] = useReducer(historyReducer, { past: [], present: generateInitialGrimState(), future: []})
