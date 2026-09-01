@@ -36,8 +36,6 @@ interface CharacterTypeCount {
     demons: number
 }
 
-export type CharacterType = "townsfolk" | "outsider" | "minion" | "demon" | "traveller" | "fabled" | "loric"
-
 const CHARACTER_TYPE_COUNTS: Record<number, CharacterTypeCount> = {
     5: { townsfolk: 3, outsiders: 0, minions: 1, demons: 1 },
     6: { townsfolk: 3, outsiders: 1, minions: 1, demons: 1 },
