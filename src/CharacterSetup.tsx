@@ -7,10 +7,17 @@ import "./CharacterSetup.css"
 import { getCharacter, type CharacterType } from "./Characters"
 
 function addAllSelected(dispatch : React.Dispatch<GrimAction>, state : GrimState) {
-    state.selectedCharacterIds.forEach(id => {
-        dispatch({ type: "addToken", id: crypto.randomUUID(), characterId: id })
+    dispatch({
+        type: "batch",
+        actions: [
+            ...state.selectedCharacterIds.map(id => ({
+                type: "addToken" as const,
+                id: crypto.randomUUID(),
+                characterId: id
+            })),
+            { type: "clearSelectedCharacterIds" },
+        ]
     })
-    dispatch({ type: "clearSelectedCharacterIds" })
 }
 
 function getSelectedTypeCounts(state: GrimState) : Record<"townsfolk" | "outsider" | "minion" | "demon", number> {
@@ -68,10 +75,10 @@ function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAct
                             }
                     </div>
                     <div> {/* TODO: fix button colors */}
-                        <button className={counts.townsfolk == expectedCounts.townsfolk ? "selected" : ""} onClick={() => setType("townsfolk")}>Townsfolk {counts.townsfolk}/{expectedCounts.townsfolk}</button>
-                        <button className={counts.outsider == expectedCounts.outsiders ? "selected" : ""} onClick={() => setType("outsider")}>Outsiders {counts.outsider}/{expectedCounts.outsiders}</button>
-                        <button className={counts.minion == expectedCounts.minions ? "selected" : ""} onClick={() => setType("minion")}>Minions {counts.minion}/{expectedCounts.minions}</button>
-                        <button className={counts.demon == expectedCounts.demons ? "selected" : ""} onClick={() => setType("demon")}>Demons {counts.demon}/{expectedCounts.demons}</button>
+                        <button onClick={() => setType("townsfolk")}>Townsfolk {counts.townsfolk}</button>
+                        <button onClick={() => setType("outsider")}>Outsiders {counts.outsider}</button>
+                        <button onClick={() => setType("minion")}>Minions {counts.minion}</button>
+                        <button onClick={() => setType("demon")}>Demons {counts.demon}</button>
                     </div>
                     <div>
                         {characterIdsByType["traveller"].length !== 0 && <button onClick={() => setType("traveller")}>Travellers</button>}

@@ -71,6 +71,7 @@ export type GrimAction =
     | { type: "removeReminder"; reminderId: string, tokenId: string}
     | { type: "toggleSelectedCharacterId"; characterId: string }
     | { type: "clearSelectedCharacterIds" }
+    | { type: "batch"; actions: GrimAction[] }
 
 export function grimActionReducer(state: GrimState, action: GrimAction): GrimState {
     switch (action.type) {
@@ -139,6 +140,8 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
             return { ...state, selectedCharacterIds: state.selectedCharacterIds.includes(action.characterId) ? state.selectedCharacterIds.filter(id => id !== action.characterId) : [...state.selectedCharacterIds, action.characterId]}
         case "clearSelectedCharacterIds":
             return { ...state, selectedCharacterIds: [] }
+        case "batch":
+            return action.actions.reduce(grimActionReducer, state)
     }
 }
 
