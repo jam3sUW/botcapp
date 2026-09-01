@@ -19,7 +19,10 @@ function CharacterSetup({ state } : { state: GrimState }) {
         <>
             <button disabled={state.script.name === "No Script"} onClick={() => setOpen(true)}>Select roles</button>
             {open && (
-                <Modal className="character-setup-modal" onClose={() => setOpen(false)}>
+                <Modal className="character-setup-modal" onClose={() => {
+                        setType("townsfolk")
+                        setOpen(false)
+                    }}>
                     <div className="selection-list">
                         {chosenType && characterIdsByType[chosenType].length > 2 && ( /* TODO: Better way to check length? ALso sizing */
                             <>
