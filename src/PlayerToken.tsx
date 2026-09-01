@@ -1,13 +1,13 @@
 import { type GrimAction, type GrimState} from "./Grimoire";
-import { formatToken, type Token as TokenData } from "./Tokens";
+import { formatToken, type Token } from "./Tokens";
 import ReminderManager from "./ReminderManager";
 import { useState } from "react";
 import "./PlayerToken.css"
-import Token from "./Token";
+import DisplayToken from "./DisplayToken";
 
 interface PlayerTokenProps {
     dispatch: React.Dispatch<GrimAction>
-    token: TokenData
+    token: Token
     state: GrimState
 }
 
@@ -15,7 +15,7 @@ export default function PlayerToken({ dispatch, token, state }: PlayerTokenProps
     const [selected, setSelected] = useState(false)
     return (
         <li className="token-row">
-            <Token characterId={token.characterId} onClick={() => setSelected(!selected)}></Token>
+            <DisplayToken characterId={token.characterId} onClick={() => setSelected(!selected)}/>
             {formatToken(token)}
             {selected && (
                 <>
