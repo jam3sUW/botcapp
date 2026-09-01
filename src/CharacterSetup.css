@@ -21,7 +21,7 @@
     gap: var(--gap-length)
 }
 
-.bottom {
+.selection-row.bottom {
     padding-left: calc(calc(var(--token-diameter, 60px) / 2) + calc(var(--gap-length, 10px) / 2))
 }
 
