@@ -4,7 +4,7 @@ import nightOrderData from "./data/nightsheet.json"
 export interface Character {
     id: string
     name: string
-    characterType: string
+    characterType: CharacterType
     ability: string
     edition?: string
     setup: boolean
@@ -29,11 +29,13 @@ interface RawCharacter {
     flavor?: string
 }
 
+export type CharacterType = "townsfolk" | "outsider" | "minion" | "demon" | "traveller" | "fabled" | "loric"
+
 function characterFromRaw(data: RawCharacter) : Character {
     return {
         id: data.id,
         name: data.name,
-        characterType: data.team,
+        characterType: data.team as CharacterType,
         ability: data.ability,
         edition: data.edition,
         setup: data.setup ?? false,

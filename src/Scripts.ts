@@ -36,7 +36,7 @@ interface CharacterTypeCount {
     demons: number
 }
 
-export type CharacterType = "townsfolk" | "outsiders" | "minions" | "demons" | "travellers" | "fabled" | "lorics"
+export type CharacterType = "townsfolk" | "outsider" | "minion" | "demon" | "traveller" | "fabled" | "loric"
 
 const CHARACTER_TYPE_COUNTS: Record<number, CharacterTypeCount> = {
     5: { townsfolk: 3, outsiders: 0, minions: 1, demons: 1 },
@@ -59,22 +59,22 @@ export function getCharacterTypeCounts(playerCount: number) : CharacterTypeCount
 
 interface ScriptCharacterIdsByType {
     townsfolk: string[],
-    outsiders: string[],
-    minions: string[],
-    demons: string[],
-    travellers: string[],
+    outsider: string[],
+    minion: string[],
+    demon: string[],
+    traveller: string[],
     fabled: string[],
-    lorics: string[],
+    loric: string[],
 }
 
 export function getScriptCharacterTypes(script: Script) : ScriptCharacterIdsByType {
     return {
         townsfolk: script.characterIds.filter(id => getCharacter(id)?.characterType === "townsfolk"),
-        outsiders: script.characterIds.filter(id => getCharacter(id)?.characterType === "outsider"),
-        minions: script.characterIds.filter(id => getCharacter(id)?.characterType === "minion"),
-        demons: script.characterIds.filter(id => getCharacter(id)?.characterType === "demon"),
-        travellers: script.characterIds.filter(id => getCharacter(id)?.characterType === "traveller"),
+        outsider: script.characterIds.filter(id => getCharacter(id)?.characterType === "outsider"),
+        minion: script.characterIds.filter(id => getCharacter(id)?.characterType === "minion"),
+        demon: script.characterIds.filter(id => getCharacter(id)?.characterType === "demon"),
+        traveller: script.characterIds.filter(id => getCharacter(id)?.characterType === "traveller"),
         fabled: script.characterIds.filter(id => getCharacter(id)?.characterType === "fabled"),
-        lorics: script.characterIds.filter(id => getCharacter(id)?.characterType === "loric"),
+        loric: script.characterIds.filter(id => getCharacter(id)?.characterType === "loric"),
     }
 }

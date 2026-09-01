@@ -2,14 +2,26 @@ import { useState } from "react"
 import Modal from "./Modal"
 import type { GrimAction, GrimState } from "./Grimoire"
 import DisplayToken from "./DisplayToken"
-import { getScriptCharacterTypes, type CharacterType } from "./Scripts"
+import { getCharacterTypeCounts, getScriptCharacterTypes } from "./Scripts"
 import "./CharacterSetup.css"
+import { getCharacter, type CharacterType } from "./Characters"
 
 function addAllSelected(dispatch : React.Dispatch<GrimAction>, state : GrimState) {
     state.selectedCharacterIds.forEach(id => {
         dispatch({ type: "addToken", id: crypto.randomUUID(), characterId: id })
     })
     dispatch({ type: "clearSelectedCharacterIds" })
+}
+
+function getSelectedTypeCounts(state: GrimState) : Record<"townsfolk" | "outsider" | "minion" | "demon", number> {
+    const counts = { townsfolk: 0, outsider: 0, minion: 0, demon: 0,  }
+    for (const id of state.selectedCharacterIds) {
+        const type = getCharacter(id)?.characterType
+        if (type === "townsfolk" || type === "outsider" || type === "minion" || type === "demon") {
+            counts[type]++
+        }
+    }
+    return counts
 }
 
 function rows(ids : string[]) : { top: string[], bottom: string[] } {
@@ -24,6 +36,8 @@ function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAct
     const characterIdsByType = getScriptCharacterTypes(state.script)
     const ids = characterIdsByType[chosenType]
     const { top, bottom } = ids.length > 2 ? rows(ids) : { top: ids, bottom: []}
+    const counts = getSelectedTypeCounts(state)
+    const expectedCounts = getCharacterTypeCounts(7) /* TODO: Change with expected player count */
 
     function closePopup() {
         setType("townsfolk")
@@ -53,16 +67,16 @@ function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAct
                                 </div>
                             }
                     </div>
-                    <div>
-                        <button onClick={() => setType("townsfolk")}>Townsfolk</button>
-                        <button onClick={() => setType("outsiders")}>Outsiders</button>
-                        <button onClick={() => setType("minions")}>Minions</button>
-                        <button onClick={() => setType("demons")}>Demons</button>
+                    <div> {/* TODO: fix button colors */}
+                        <button className={counts.townsfolk == expectedCounts.townsfolk ? "selected" : ""} onClick={() => setType("townsfolk")}>Townsfolk {counts.townsfolk}/{expectedCounts.townsfolk}</button>
+                        <button className={counts.outsider == expectedCounts.outsiders ? "selected" : ""} onClick={() => setType("outsider")}>Outsiders {counts.outsider}/{expectedCounts.outsiders}</button>
+                        <button className={counts.minion == expectedCounts.minions ? "selected" : ""} onClick={() => setType("minion")}>Minions {counts.minion}/{expectedCounts.minions}</button>
+                        <button className={counts.demon == expectedCounts.demons ? "selected" : ""} onClick={() => setType("demon")}>Demons {counts.demon}/{expectedCounts.demons}</button>
                     </div>
                     <div>
-                        {characterIdsByType["travellers"].length !== 0 && <button onClick={() => setType("travellers")}>Travellers</button>}
+                        {characterIdsByType["traveller"].length !== 0 && <button onClick={() => setType("traveller")}>Travellers</button>}
                         {characterIdsByType["fabled"].length !== 0 && <button onClick={() => setType("fabled")}>Fabled</button>}
-                        {characterIdsByType["lorics"].length !== 0 && <button onClick={() => setType("lorics")}>Lorics</button>}
+                        {characterIdsByType["loric"].length !== 0 && <button onClick={() => setType("loric")}>Lorics</button>}
                     </div>
                     <div>
                         <button disabled={state.selectedCharacterIds.length == 0} onClick={() => {
