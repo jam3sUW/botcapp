@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Modal from "./Modal"
-import type { GrimState } from "./Grimoire"
+import type { GrimAction, GrimState } from "./Grimoire"
 import DisplayToken from "./DisplayToken"
 import { getScriptCharacterTypes, type CharacterType } from "./Scripts"
 import "./CharacterSetup.css"
@@ -10,7 +10,7 @@ function rows(ids : string[]) : { top: string[], bottom: string[] } {
     return { top: ids.slice(0, midpoint), bottom: ids.slice(midpoint, ids.length) }
 }
 
-function CharacterSetup({ state } : { state: GrimState }) {
+function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAction>, state: GrimState }) {
     const [open, setOpen] = useState(false)
     const [chosenType, setType] = useState<CharacterType | "">("townsfolk")
     const characterIdsByType = getScriptCharacterTypes(state.script)
@@ -28,12 +28,16 @@ function CharacterSetup({ state } : { state: GrimState }) {
                             <>
                                 <div className="selection-row">
                                     {rows(characterIdsByType[chosenType]).top.map(id => (
-                                        <DisplayToken key={id} characterId={id}/>
+                                        <DisplayToken key={id} className={state.selectedCharacterIds.includes(id) ? "selected" : ""} characterId={id} onClick={() => {
+                                            dispatch({ type: "toggleSelectedCharacterId", characterId: id })
+                                        }}/>
                                     ))}
                                 </div>
                                 <div className={"selection-row bottom"}>
                                     {rows(characterIdsByType[chosenType]).bottom.map(id => (
-                                        <DisplayToken key={id} characterId={id}/>
+                                        <DisplayToken key={id} className={state.selectedCharacterIds.includes(id) ? "selected" : ""} characterId={id} onClick={() => {
+                                            dispatch({ type: "toggleSelectedCharacterId", characterId: id })
+                                        }}/>
                                     ))}
                                 </div>
                             </>
@@ -41,12 +45,14 @@ function CharacterSetup({ state } : { state: GrimState }) {
                         {chosenType && characterIdsByType[chosenType].length <= 2 && (
                             <div className="selection-row">
                                 {characterIdsByType[chosenType].map(id => (
-                                    <DisplayToken key={id} characterId={id}/>
+                                    <DisplayToken key={id} className={state.selectedCharacterIds.includes(id) ? "selected" : ""} characterId={id} onClick={() => {
+                                        dispatch({ type: "toggleSelectedCharacterId", characterId: id })
+                                    }}/>
                                 ))}
                             </div>
                         )}
                     </div>
-                    <div>
+                    <div> {/* TODO: Weird shading when highlighting buttons? */}
                         <button onClick={() => setType("townsfolk")}>Townsfolk</button>
                         <button onClick={() => setType("outsiders")}>Outsiders</button>
                         <button onClick={() => setType("minions")}>Minions</button>
