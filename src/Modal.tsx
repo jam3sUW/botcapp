@@ -12,7 +12,6 @@ function Modal({ children, onClose, className }: { children: ReactNode, onClose:
         <div className="modal-background" onClick={onClose}>
             <div className={`modal-content ${className ?? ""}`} onClick={(e) => e.stopPropagation()}>
                 {children}
-                <button onClick={onClose}>Close</button>
             </div>
         </div>,
         root

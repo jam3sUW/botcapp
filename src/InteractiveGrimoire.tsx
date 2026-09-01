@@ -24,7 +24,7 @@ function InteractiveGrimoire() {
 
             <ScriptLoader dispatch={dispatch}/>
 
-            <CharacterSetup></CharacterSetup>
+            <CharacterSetup state={state}></CharacterSetup>
 
             <button onClick={() => dispatch({ type: "addToken", id: crypto.randomUUID(), characterId: chosenChar, name: chosenName })}>Add token</button>
             <select value={chosenChar} onChange={(e) => setChosenChar(e.target.value)}>

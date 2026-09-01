@@ -1,6 +1,6 @@
 .token-circle {
-    height: 60px;
-    width: 60px;
+    height: var(--token-diameter, 60px);
+    width: var(--token-diameter, 60px);
     border-radius: 50%;
     outline-width: 2px;
     outline-style: dashed;

@@ -36,6 +36,8 @@ interface CharacterTypeCount {
     demons: number
 }
 
+export type CharacterType = "townsfolk" | "outsiders" | "minions" | "demons" | "travellers" | "fabled" | "lorics"
+
 const CHARACTER_TYPE_COUNTS: Record<number, CharacterTypeCount> = {
     5: { townsfolk: 3, outsiders: 0, minions: 1, demons: 1 },
     6: { townsfolk: 3, outsiders: 1, minions: 1, demons: 1 },
@@ -55,6 +57,24 @@ export function getCharacterTypeCounts(playerCount: number) : CharacterTypeCount
     return CHARACTER_TYPE_COUNTS[playerCount]!
 }
 
-export function getScriptCharacterTypes(script: Script, type: string) : string[] {
-    return script.characterIds.filter(id => getCharacter(id)?.characterType === type)
+interface ScriptCharacterIdsByType {
+    townsfolk: string[],
+    outsiders: string[],
+    minions: string[],
+    demons: string[],
+    travellers: string[],
+    fabled: string[],
+    lorics: string[],
+}
+
+export function getScriptCharacterTypes(script: Script) : ScriptCharacterIdsByType {
+    return {
+        townsfolk: script.characterIds.filter(id => getCharacter(id)?.characterType === "townsfolk"),
+        outsiders: script.characterIds.filter(id => getCharacter(id)?.characterType === "outsider"),
+        minions: script.characterIds.filter(id => getCharacter(id)?.characterType === "minion"),
+        demons: script.characterIds.filter(id => getCharacter(id)?.characterType === "demon"),
+        travellers: script.characterIds.filter(id => getCharacter(id)?.characterType === "traveller"),
+        fabled: script.characterIds.filter(id => getCharacter(id)?.characterType === "fabled"),
+        lorics: script.characterIds.filter(id => getCharacter(id)?.characterType === "loric"),
+    }
 }

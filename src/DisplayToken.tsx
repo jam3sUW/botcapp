@@ -1,7 +1,7 @@
-import "./Token.css"
+import "./DisplayToken.css"
 import { getCharacter } from "./Characters";
 
-function Token({ characterId, className, onClick }: { characterId?: string, className?: string, onClick: () => void }) {
+function DisplayToken({ characterId, className, onClick }: { characterId?: string, className?: string, onClick?: () => void }) {
     const character = characterId !== undefined ? getCharacter(characterId) : undefined
     const imgFilepath = character && `/assets/characters/${character.edition}/${characterId}.webp`
     return (
@@ -11,4 +11,4 @@ function Token({ characterId, className, onClick }: { characterId?: string, clas
     )
 }
 
-export default Token
+export default DisplayToken

@@ -1,4 +1,26 @@
 .character-setup-modal {
     width: 50%;
     height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.selection-list {
+    --token-diameter: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--token-diameter) / 8);
+}
+
+.selection-row {
+    --gap-length: 10px;
+    display: flex;
+    gap: var(--gap-length)
+}
+
+.bottom {
+    padding-left: calc(calc(var(--token-diameter, 60px) / 2) + calc(var(--gap-length, 10px) / 2))
 }
