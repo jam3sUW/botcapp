@@ -1,13 +1,14 @@
 import { type GrimAction, type GrimState} from "./Grimoire";
-import { formatToken, type Token } from "./Tokens";
+import { formatToken, type Token as TokenData } from "./Tokens";
 import ReminderManager from "./ReminderManager";
 import { useState } from "react";
-import "./Token.css"
+import "./PlayerToken.css"
 import { getCharacter } from "./Characters";
+import Token from "./Token";
 
 interface PlayerTokenProps {
     dispatch: React.Dispatch<GrimAction>
-    token: Token
+    token: TokenData
     state: GrimState
 }
 
@@ -17,9 +18,7 @@ export default function PlayerToken({ dispatch, token, state }: PlayerTokenProps
     const imgFilepath = `/assets/characters/${edition}/${token.characterId}.webp`
     return (
         <li className="token-row">
-            <div className="token-circle" onClick={() => setSelected(!selected)}>
-                <img src={imgFilepath}/>
-            </div>
+            <Token characterId={token.characterId} onClick={() => setSelected(!selected)}></Token>
             {formatToken(token)}
             {selected && (
                 <>
