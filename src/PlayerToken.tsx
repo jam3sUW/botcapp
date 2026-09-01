@@ -3,7 +3,6 @@ import { formatToken, type Token as TokenData } from "./Tokens";
 import ReminderManager from "./ReminderManager";
 import { useState } from "react";
 import "./PlayerToken.css"
-import { getCharacter } from "./Characters";
 import Token from "./Token";
 
 interface PlayerTokenProps {
@@ -14,8 +13,6 @@ interface PlayerTokenProps {
 
 export default function PlayerToken({ dispatch, token, state }: PlayerTokenProps) {
     const [selected, setSelected] = useState(false)
-    const edition = getCharacter(token.characterId)?.edition ?? "homebrew"
-    const imgFilepath = `/assets/characters/${edition}/${token.characterId}.webp`
     return (
         <li className="token-row">
             <Token characterId={token.characterId} onClick={() => setSelected(!selected)}></Token>
