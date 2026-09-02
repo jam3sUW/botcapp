@@ -3,9 +3,19 @@
     to { opacity: 1; scale: 1; }
 }
 
+@keyframes fadeOut {
+    from { opacity: 1; scale: 1; }
+    to { opacity: 0; scale: 1; }
+}
+
 @keyframes deepen {
     from { background-color: rgba(0, 0, 0, 0.0); }
     to { background-color: rgba(0, 0, 0, 0.6); }
+}
+
+@keyframes lighten {
+    from { background-color: rgba(0, 0, 0, 0.6); }
+    to { background-color: rgba(0, 0, 0, 0.0); }
 }
 
 .modal-background {
@@ -15,7 +25,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: deepen 0.5s ease forwards;
 }
 
 .modal-content {
@@ -25,3 +34,9 @@
     overflow-y: auto;
     animation: fadeIn 0.2s forwards;
 }
+
+.modal-background.fade-in { animation: deepen 0.5s ease forwards }
+.modal-background.fade-out { animation: lighten 0.2s ease forwards }
+
+.modal-content.fade-in { animation: fadeIn 0.2s forwards; }
+.modal-content.fade-out { animation: fadeOut 0.2s forwards; }

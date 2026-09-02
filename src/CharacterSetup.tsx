@@ -54,46 +54,44 @@ function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAct
     return (
         <>
             <button disabled={state.script.name === "No Script"} onClick={() => setOpen(true)}>Select roles</button>
-            {open && (
-                <Modal className="character-setup-modal" onClose={() => closePopup()}>
-                    <div className="selection-list">
-                            <div className="selection-row">
-                                {top.map(id => (
+            <Modal className="character-setup-modal" onClose={() => closePopup()} open={open}>
+                <div className="selection-list">
+                        <div className="selection-row">
+                            {top.map(id => (
+                                <DisplayToken key={id} className={state.selectedCharacterIds.includes(id) ? "selected" : ""} characterId={id} onClick={() => {
+                                    dispatch({ type: "toggleSelectedCharacterId", characterId: id })
+                                }}/>
+                            ))}
+                        </div>
+                        {bottom.length != 0 &&
+                            <div className={"selection-row bottom"}>
+                                {bottom.map(id => (
                                     <DisplayToken key={id} className={state.selectedCharacterIds.includes(id) ? "selected" : ""} characterId={id} onClick={() => {
                                         dispatch({ type: "toggleSelectedCharacterId", characterId: id })
                                     }}/>
                                 ))}
                             </div>
-                            {bottom.length != 0 &&
-                                <div className={"selection-row bottom"}>
-                                    {bottom.map(id => (
-                                        <DisplayToken key={id} className={state.selectedCharacterIds.includes(id) ? "selected" : ""} characterId={id} onClick={() => {
-                                            dispatch({ type: "toggleSelectedCharacterId", characterId: id })
-                                        }}/>
-                                    ))}
-                                </div>
-                            }
-                    </div>
-                    <div> {/* TODO: fix button colors */}
-                        <button onClick={() => setType("townsfolk")}>Townsfolk {counts.townsfolk}</button>
-                        <button onClick={() => setType("outsider")}>Outsiders {counts.outsider}</button>
-                        <button onClick={() => setType("minion")}>Minions {counts.minion}</button>
-                        <button onClick={() => setType("demon")}>Demons {counts.demon}</button>
-                    </div>
-                    <div>
-                        {characterIdsByType["traveller"].length !== 0 && <button onClick={() => setType("traveller")}>Travellers</button>}
-                        {characterIdsByType["fabled"].length !== 0 && <button onClick={() => setType("fabled")}>Fabled</button>}
-                        {characterIdsByType["loric"].length !== 0 && <button onClick={() => setType("loric")}>Lorics</button>}
-                    </div>
-                    <div>
-                        <button disabled={state.selectedCharacterIds.length == 0} onClick={() => {
-                            closePopup()
-                            addAllSelected(dispatch, state)
-                        }}>Add all</button>
-                        <button onClick={() => dispatch({ type: "clearSelectedCharacterIds" })}>Clear</button>
-                    </div>
-                </Modal>
-            )}
+                        }
+                </div>
+                <div> {/* TODO: fix button colors */}
+                    <button onClick={() => setType("townsfolk")}>Townsfolk {counts.townsfolk}</button>
+                    <button onClick={() => setType("outsider")}>Outsiders {counts.outsider}</button>
+                    <button onClick={() => setType("minion")}>Minions {counts.minion}</button>
+                    <button onClick={() => setType("demon")}>Demons {counts.demon}</button>
+                </div>
+                <div>
+                    {characterIdsByType["traveller"].length !== 0 && <button onClick={() => setType("traveller")}>Travellers</button>}
+                    {characterIdsByType["fabled"].length !== 0 && <button onClick={() => setType("fabled")}>Fabled</button>}
+                    {characterIdsByType["loric"].length !== 0 && <button onClick={() => setType("loric")}>Lorics</button>}
+                </div>
+                <div>
+                    <button disabled={state.selectedCharacterIds.length == 0} onClick={() => {
+                        closePopup()
+                        addAllSelected(dispatch, state)
+                    }}>Add all</button>
+                    <button onClick={() => dispatch({ type: "clearSelectedCharacterIds" })}>Clear</button>
+                </div>
+            </Modal>
         </>
     )
 }
