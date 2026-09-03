@@ -24,7 +24,6 @@ function addAllSelected(dispatch : React.Dispatch<GrimAction>, state : GrimState
 }
 
 function selectRandom(dispatch: React.Dispatch<GrimAction>, options: ScriptCharacterIdsByType, counts: CharacterTypeCount) {
-    console.log("okay okay")
     dispatch({ type: "clearSelectedCharacterIds"} )
     const randomIds = [
         ...nRandom(options.townsfolk, counts.townsfolk),
