@@ -38,6 +38,7 @@ export default function BluffManager({ dispatch, state }: BluffManagerProps) {
                     <li>
                         <button onClick={() => dispatch({ type: "updateBluffSet", id: bluffSet.id, characterIds: generateBluffs(state)})}>Auto bluffs</button>
                         <button onClick={() => dispatch({ type: "removeBluffSet", id: bluffSet.id})}>Remove bluffs</button>
+                        <button onClick={() => dispatch({ type: "updateBluffSet", id: bluffSet.id, characterIds: ["", "", ""] })}>Clear bluffs</button>
                     </li>
                 </ul>
             )}
