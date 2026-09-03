@@ -22,7 +22,7 @@ function addAllSelected(dispatch : React.Dispatch<GrimAction>, state : GrimState
         ]
     })
 }
-/* dispatch({ type: "toggleSelectedCharacterId", characterId: id } state.selectedCharacterIds.includes(id) */
+
 function selectRandom(dispatch: React.Dispatch<GrimAction>, options: ScriptCharacterIdsByType, counts: CharacterTypeCount) {
     dispatch({ type: "clearSelectedCharacterIds"} )
     const randomIds = [
@@ -63,7 +63,9 @@ function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAct
                     <label>Player count: </label>
                     <input type="number" value={state.expectedPlayerCount} min={5} max={15} onChange={(e) => dispatch({ type: "setExpectedPlayerCount", count: Number(e.target.value) })}/>
                 </div>
+
                 <TokenGrid ids={ids} onClickId={id => dispatch({ type: "toggleSelectedCharacterId", characterId: id })} isSelected={id => state.selectedCharacterIds.includes(id)}/>
+
                 <div> {/* TODO: fix button colors */}
                     <button onClick={() => setType("townsfolk")}>Townsfolk {counts.townsfolk}/{expectedCounts.townsfolk}</button>
                     <button onClick={() => setType("outsider")}>Outsiders {counts.outsider}/{expectedCounts.outsider}</button>
@@ -71,7 +73,7 @@ function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAct
                     <button onClick={() => setType("demon")}>Demons {counts.demon}/{expectedCounts.demon}</button>
                 </div>
                 <div>
-                    {characterIdsByType["traveller"].length !== 0 && <button onClick={() => setType("traveller")}>Travellers</button>}
+                    {characterIdsByType["traveller"].length !== 0 && <button onClick={() => setType("traveller")}>Travellers</button>} {/* TODO: Show all? */}
                     {characterIdsByType["fabled"].length !== 0 && <button onClick={() => setType("fabled")}>Fabled</button>}
                     {characterIdsByType["loric"].length !== 0 && <button onClick={() => setType("loric")}>Lorics</button>}
                 </div>

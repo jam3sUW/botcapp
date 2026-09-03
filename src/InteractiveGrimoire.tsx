@@ -9,6 +9,7 @@ import { getInPlayJinxes } from "./Jinxes";
 import "./InteractiveGrimoire.css"
 import CharacterSetup from "./CharacterSetup";
 import TokenAdder from "./TokenAdder";
+import TravellerAdder from "./TravellerAdder";
 
 function InteractiveGrimoire() {
     const [{ present: state, past, future }, dispatch] = useReducer(historyReducer, { past: [], present: generateInitialGrimState(), future: []})
@@ -26,6 +27,8 @@ function InteractiveGrimoire() {
             <CharacterSetup dispatch={dispatch} state={state}/>
 
             <TokenAdder dispatch={dispatch} state={state}/>
+            
+            <TravellerAdder dispatch={dispatch} state={state}/>
 
             <button onClick={() => dispatch({ type: "clear"})}>Clear</button>
             

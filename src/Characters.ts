@@ -55,6 +55,7 @@ function loadCharacters() : Record<string, Character> {
 
 const characters = loadCharacters()
 export const fabledLorics = Object.values(characters).filter(char => char.characterType === "fabled" || char.characterType === "loric").map(character => character.id)
+export const travellers = Object.values(characters).filter(char => char.characterType === "traveller")
 
 export function getCharacter(id : string) : Character | undefined {
     return characters[id]
