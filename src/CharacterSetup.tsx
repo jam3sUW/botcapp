@@ -1,11 +1,11 @@
-import { useCallback, useRef, useState } from "react"
+import { useState } from "react"
 import Modal from "./Modal"
 import type { GrimAction, GrimState } from "./Grimoire"
-import DisplayToken from "./DisplayToken"
 import { type CharacterTypeCount, getCharacterTypeCounts, getScriptCharacterTypes, type ScriptCharacterIdsByType } from "./Scripts"
 import "./CharacterSetup.css"
 import { getCharacter, type CharacterType } from "./Characters"
 import { nRandom } from "./Utils"
+import TokenGrid from "./TokenGrid"
 
 function addAllSelected(dispatch : React.Dispatch<GrimAction>, state : GrimState) {
     dispatch({
@@ -22,7 +22,7 @@ function addAllSelected(dispatch : React.Dispatch<GrimAction>, state : GrimState
         ]
     })
 }
-
+/* dispatch({ type: "toggleSelectedCharacterId", characterId: id } state.selectedCharacterIds.includes(id) */
 function selectRandom(dispatch: React.Dispatch<GrimAction>, options: ScriptCharacterIdsByType, counts: CharacterTypeCount) {
     dispatch({ type: "clearSelectedCharacterIds"} )
     const randomIds = [
@@ -47,36 +47,13 @@ function getSelectedTypeCounts(state: GrimState) : Record<"townsfolk" | "outside
     return counts
 }
 
-function rows(ids : string[]) : { top: string[], bottom: string[] } {
-    const midpoint = Math.ceil(ids.length / 2)
-    return { top: ids.slice(0, midpoint), bottom: ids.slice(midpoint, ids.length) }
-}
-
-
 function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAction>, state: GrimState }) {
     const [open, setOpen] = useState(false)
     const [chosenType, setType] = useState<CharacterType>("townsfolk")
     const characterIdsByType = getScriptCharacterTypes(state.script)
     const ids = characterIdsByType[chosenType]
-    const { top, bottom } = ids.length > 2 ? rows(ids) : { top: ids, bottom: []}
     const counts = getSelectedTypeCounts(state)
     const expectedCounts = getCharacterTypeCounts(state.expectedPlayerCount)
-    const [containerWidth, setContainerWidth]  = useState(0)
-    const observerRef = useRef<ResizeObserver | null>(null)
-
-    const containerRef = useCallback((node: HTMLDivElement | null) => {
-        observerRef.current?.disconnect()
-        if (!node) return
-        observerRef.current = new ResizeObserver(entries => {
-            setContainerWidth(entries[0]!.contentRect.width)
-        })
-        observerRef.current.observe(node)
-    }, [])
-
-    const MAX_DIAMETER = 120
-    const MIN_DIAMETER = 60
-    const GAP = 10
-    const tokenDiameter = Math.max(MIN_DIAMETER, Math.min(MAX_DIAMETER, (containerWidth - ((top.length - 1) * GAP)) / top.length))
 
     return (
         <>
@@ -86,26 +63,7 @@ function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAct
                     <label>Player count: </label>
                     <input type="number" value={state.expectedPlayerCount} min={5} max={15} onChange={(e) => dispatch({ type: "setExpectedPlayerCount", count: Number(e.target.value) })}/>
                 </div>
-                <div className="selection-list" style={{ "--token-diameter": `${tokenDiameter}px` } as React.CSSProperties} ref={containerRef}>
-                    <div className="selection-rows">
-                        <div className="selection-row">
-                            {top.map(id => (
-                                <DisplayToken key={id} className={state.selectedCharacterIds.includes(id) ? "selected" : ""} characterId={id} onClick={() => {
-                                    dispatch({ type: "toggleSelectedCharacterId", characterId: id })
-                                }}/>
-                            ))}
-                        </div>
-                        {bottom.length != 0 &&
-                            <div className={"selection-row bottom"}>
-                                {bottom.map(id => (
-                                    <DisplayToken key={id} className={state.selectedCharacterIds.includes(id) ? "selected" : ""} characterId={id} onClick={() => {
-                                        dispatch({ type: "toggleSelectedCharacterId", characterId: id })
-                                    }}/>
-                                ))}
-                            </div>
-                        }
-                    </div>
-                </div>
+                <TokenGrid ids={ids} onClickId={id => dispatch({ type: "toggleSelectedCharacterId", characterId: id })} isSelected={id => state.selectedCharacterIds.includes(id)}/>
                 <div> {/* TODO: fix button colors */}
                     <button onClick={() => setType("townsfolk")}>Townsfolk {counts.townsfolk}/{expectedCounts.townsfolk}</button>
                     <button onClick={() => setType("outsider")}>Outsiders {counts.outsider}/{expectedCounts.outsider}</button>
