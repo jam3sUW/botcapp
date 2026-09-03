@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { GrimAction, GrimState } from "./Grimoire";
 import Modal from "./Modal";
 import TokenGrid from "./TokenGrid";
-import { fabledLorics, getCharacter, type CharacterType } from "./Characters";
+import { fabledLorics, getCharacter } from "./Characters";
 import { getScriptCharacterTypes, type ScriptCharacterIdsByType } from "./Scripts";
 
 function firstAvailableType(idsByType: ScriptCharacterIdsByType): "fabled" | "loric" {

@@ -1,8 +1,7 @@
 import { useReducer } from "react";
-import { useState } from "react";
 import { aliveCount, availableVotes, blockVotes, exileVotes, firstNightOrder, historyReducer, generateInitialGrimState, otherNightOrder } from "./Grimoire";
 import ScriptLoader from "./ScriptLoader";
-import { getCharacter, fabledLorics } from "./Characters";
+import { getCharacter } from "./Characters";
 import BluffManager from "./BluffManager";
 import PlayerToken from "./PlayerToken";
 import { getInPlayJinxes } from "./Jinxes";
@@ -14,7 +13,6 @@ import FabledLoricAdder from "./FabledLoricAdder";
 
 function InteractiveGrimoire() {
     const [{ present: state, past, future }, dispatch] = useReducer(historyReducer, { past: [], present: generateInitialGrimState(), future: []})
-    const [chosenFabledLoric, setChosenFabledLoric] = useState("")
     const sortedTokens = [...state.tokens].sort((a, b) => (a.seat ?? 999) - (b.seat ?? 999))
     const inPlayJinxes = getInPlayJinxes(state)
 
