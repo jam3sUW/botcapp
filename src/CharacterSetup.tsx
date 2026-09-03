@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useRef, useState } from "react"
 import Modal from "./Modal"
 import type { GrimAction, GrimState } from "./Grimoire"
 import DisplayToken from "./DisplayToken"
@@ -6,7 +6,7 @@ import { getCharacterTypeCounts, getScriptCharacterTypes } from "./Scripts"
 import "./CharacterSetup.css"
 import { getCharacter, type CharacterType } from "./Characters"
 
-function addAllSelected(dispatch : React.Dispatch<GrimAction>, state : GrimState) {
+function addAllSelected(dispatch : React.Dispatch<GrimAction>, state : GrimState) { /* TODO: make work with fabled/lorics */
     dispatch({
         type: "batch",
         actions: [
@@ -44,18 +44,34 @@ function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAct
     const ids = characterIdsByType[chosenType]
     const { top, bottom } = ids.length > 2 ? rows(ids) : { top: ids, bottom: []}
     const counts = getSelectedTypeCounts(state)
-    const expectedCounts = getCharacterTypeCounts(7) /* TODO: Change with expected player count */
+    const expectedCounts = getCharacterTypeCounts(state.expectedPlayerCount) /* TODO: Change with expected player count */
+    const [containerWidth, setContainerWidth]  = useState(0)
+    const observerRef = useRef<ResizeObserver | null>(null)
 
-    function closePopup() {
-        setType("townsfolk")
-        setOpen(false)
-    }
+    const containerRef = useCallback((node: HTMLDivElement | null) => {
+        observerRef.current?.disconnect()
+        if (!node) return
+        observerRef.current = new ResizeObserver(entries => {
+            setContainerWidth(entries[0]!.contentRect.width)
+        })
+        observerRef.current.observe(node)
+    }, [])
+
+    const MAX_DIAMETER = 120
+    const MIN_DIAMETER = 60
+    const GAP = 10
+    const tokenDiameter = Math.max(MIN_DIAMETER, Math.min(MAX_DIAMETER, (containerWidth - ((top.length - 1) * GAP)) / top.length))
 
     return (
         <>
-            <button disabled={state.script.name === "No Script"} onClick={() => setOpen(true)}>Select roles</button>
-            <Modal className="character-setup-modal" onClose={() => closePopup()} open={open}>
-                <div className="selection-list">
+            <button disabled={state.script.name === "No Script"} onClick={() => { setType("townsfolk"); setOpen(true); }}>Select roles</button>
+            <Modal className="character-setup-modal" onClose={() => setOpen(false)} open={open}>
+                <div>
+                    <label>Player count: </label>
+                    <input type="number" value={state.expectedPlayerCount} min={5} max={15} onChange={(e) => dispatch({ type: "setExpectedPlayerCount", count: Number(e.target.value) })}/>
+                </div>
+                <div className="selection-list" style={{ "--token-diameter": `${tokenDiameter}px` } as React.CSSProperties} ref={containerRef}>
+                    <div className="selection-rows">
                         <div className="selection-row">
                             {top.map(id => (
                                 <DisplayToken key={id} className={state.selectedCharacterIds.includes(id) ? "selected" : ""} characterId={id} onClick={() => {
@@ -72,12 +88,13 @@ function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAct
                                 ))}
                             </div>
                         }
+                    </div>
                 </div>
                 <div> {/* TODO: fix button colors */}
-                    <button onClick={() => setType("townsfolk")}>Townsfolk {counts.townsfolk}</button>
-                    <button onClick={() => setType("outsider")}>Outsiders {counts.outsider}</button>
-                    <button onClick={() => setType("minion")}>Minions {counts.minion}</button>
-                    <button onClick={() => setType("demon")}>Demons {counts.demon}</button>
+                    <button onClick={() => setType("townsfolk")}>Townsfolk {counts.townsfolk}/{expectedCounts.townsfolk}</button>
+                    <button onClick={() => setType("outsider")}>Outsiders {counts.outsider}/{expectedCounts.outsiders}</button>
+                    <button onClick={() => setType("minion")}>Minions {counts.minion}/{expectedCounts.minions}</button>
+                    <button onClick={() => setType("demon")}>Demons {counts.demon}/{expectedCounts.demons}</button>
                 </div>
                 <div>
                     {characterIdsByType["traveller"].length !== 0 && <button onClick={() => setType("traveller")}>Travellers</button>}
@@ -86,10 +103,12 @@ function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAct
                 </div>
                 <div>
                     <button disabled={state.selectedCharacterIds.length == 0} onClick={() => {
-                        closePopup()
-                        addAllSelected(dispatch, state)
-                    }}>Add all</button>
+                        setOpen(false)
+                        addAllSelected(dispatch, state) 
+                    }}>Add all</button> {/* Minor visual glitch, unselection upon closing popup */}
                     <button onClick={() => dispatch({ type: "clearSelectedCharacterIds" })}>Clear</button>
+                </div>
+                <div>
                 </div>
             </Modal>
         </>

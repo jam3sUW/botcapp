@@ -8,7 +8,8 @@ export interface GrimState {
     fabledLorics: string[]
     script: Script
     bluffSets: BluffSet[]
-    selectedCharacterIds: string[]
+    selectedCharacterIds: string[],
+    expectedPlayerCount: number
 }
 
 export interface HistoryState {
@@ -24,6 +25,7 @@ export function generateInitialGrimState(): GrimState {
         script: { characterIds: [], name: "No Script", author: "" },
         bluffSets: [{id: crypto.randomUUID(), characterIds: ["", "", ""] }],
         selectedCharacterIds: [],
+        expectedPlayerCount: 7,
     }
 }
 
@@ -43,7 +45,7 @@ export function exileVotes(tokens: Token[]) : number {
     return Math.ceil(tokens.length / 2)
 }
 
-export function firstNightOrder(tokens: Token[]) : Token[] {
+export function firstNightOrder(tokens: Token[]) : Token[] { /* TODO: Add support for fabled/lorics */
     return tokens.filter(actsOnFirstNight).toSorted((a, b) => getFirstNightOrder(a.characterId)! - getFirstNightOrder(b.characterId)!)
 }
 
@@ -71,12 +73,13 @@ export type GrimAction =
     | { type: "removeReminder"; reminderId: string, tokenId: string}
     | { type: "toggleSelectedCharacterId"; characterId: string }
     | { type: "clearSelectedCharacterIds" }
+    | { type: "setExpectedPlayerCount"; count: number }
     | { type: "batch"; actions: GrimAction[] }
 
 export function grimActionReducer(state: GrimState, action: GrimAction): GrimState {
     switch (action.type) {
         case "clear":
-            return { ...state, tokens: [], fabledLorics: [], bluffSets: [], selectedCharacterIds: [], }
+            return { ...state, tokens: [], fabledLorics: [], bluffSets: [], selectedCharacterIds: [], expectedPlayerCount: 7, }
         case "removeToken": {
             const newSeating = state.tokens
                 .filter(token => token.id !== action.id)
@@ -140,6 +143,8 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
             return { ...state, selectedCharacterIds: state.selectedCharacterIds.includes(action.characterId) ? state.selectedCharacterIds.filter(id => id !== action.characterId) : [...state.selectedCharacterIds, action.characterId]}
         case "clearSelectedCharacterIds":
             return { ...state, selectedCharacterIds: [] }
+        case "setExpectedPlayerCount":
+            return { ...state, expectedPlayerCount: action.count }
         case "batch":
             return action.actions.reduce(grimActionReducer, state)
     }
@@ -149,6 +154,8 @@ export type HistoryAction =
     | { type: "undo" }
     | { type: "redo" }
     | GrimAction
+
+const NON_HISTORY_ACTIONS: HistoryAction["type"][] = ["toggleSelectedCharacterId", "clearSelectedCharacterIds", "setExpectedPlayerCount"]
 
 export function historyReducer(state: HistoryState, action: HistoryAction) : HistoryState {
     switch (action.type) {
@@ -171,6 +178,7 @@ export function historyReducer(state: HistoryState, action: HistoryAction) : His
         default:
             const newGrimState = grimActionReducer(state.present, action)
             if (newGrimState === state.present) { return state }
+            if (NON_HISTORY_ACTIONS.includes(action.type)) { return { ...state, present: newGrimState} }
             return {
                 past: [ ...state.past, state.present],
                 present: newGrimState,
