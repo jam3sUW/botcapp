@@ -12,7 +12,7 @@ function addAllSelected(dispatch : React.Dispatch<GrimAction>, state : GrimState
         actions: [
             ...state.selectedCharacterIds.map(id => {
                 if (getCharacter(id)!.characterType === "fabled" || getCharacter(id)!.characterType === "loric") {
-                    return { type: "addFabledLoric" as const, characterId: getCharacter(id)!.name }
+                    return { type: "addFabledLoric" as const, characterId: id }
                 } else {
                     return { type: "addToken" as const, id: crypto.randomUUID(), characterId: id }
                 }

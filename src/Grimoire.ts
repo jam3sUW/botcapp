@@ -1,5 +1,5 @@
 import { actsOnFirstNight, actsOnOtherNight, killToken, reviveToken, toggleTokenDeadVote, rotateToken, type Token, addReminder, removeReminder, replaceToken } from "./Tokens"
-import { getCharacter, getFirstNightOrder, getOtherNightOrder } from "./Characters"
+import { fabledLorics, getCharacter, getFirstNightOrder, getOtherNightOrder } from "./Characters"
 import type { Script } from "./Scripts"
 import type { BluffSet } from "./Bluffs"
 
@@ -45,12 +45,16 @@ export function exileVotes(tokens: Token[]) : number {
     return Math.ceil(tokens.length / 2)
 }
 
-export function firstNightOrder(tokens: Token[]) : Token[] { /* TODO: Add support for fabled/lorics */
-    return tokens.filter(actsOnFirstNight).toSorted((a, b) => getFirstNightOrder(a.characterId)! - getFirstNightOrder(b.characterId)!)
+export function firstNightOrder(tokens: Token[], currentFabledLorics: string[]) : string[] { /* TODO: Add support for fabled/lorics */
+    const wakingTokens = tokens.filter(actsOnFirstNight).map(token => token.characterId)
+    const wakingFabledLorics = currentFabledLorics.filter(id => getFirstNightOrder(id) !== undefined)
+    return [...wakingTokens, ...wakingFabledLorics].toSorted((a, b) => getFirstNightOrder(a)! - getFirstNightOrder(b)!)
 }
 
-export function otherNightOrder(tokens: Token[]) : Token[] {
-    return tokens.filter(actsOnOtherNight).toSorted((a, b) => getOtherNightOrder(a.characterId)! - getOtherNightOrder(b.characterId)!)
+export function otherNightOrder(tokens: Token[], currentFabledLorics: string[]) : string[] { /* TODO: Add support for fabled/lorics */
+    const wakingTokens = tokens.filter(actsOnOtherNight).map(token => token.characterId)
+    const wakingFabledLorics = currentFabledLorics.filter(id => getOtherNightOrder(id) !== undefined)
+    return [...wakingTokens, ...wakingFabledLorics].toSorted((a, b) => getOtherNightOrder(a)! - getOtherNightOrder(b)!)
 }
 
 export type GrimAction =

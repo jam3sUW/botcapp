@@ -54,11 +54,11 @@ function InteractiveGrimoire() {
             
             <h2>First night:</h2>
             <ul>
-                {firstNightOrder(state.tokens).map(token => {
-                    const character = getCharacter(token.characterId)
+                {firstNightOrder(state.tokens, state.fabledLorics).map(id => {
+                    const character = getCharacter(id)
                     if (!character) return null
                     return (
-                        <li key={token.id}>
+                        <li key={id}>
                             <strong>{character.name}: </strong>
                             {character.firstNightInstruction}
                         </li>
@@ -67,11 +67,11 @@ function InteractiveGrimoire() {
             </ul>
             <h2>Other night:</h2>
             <ul>
-                {otherNightOrder(state.tokens).map(token => {
-                    const character = getCharacter(token.characterId)
+                {otherNightOrder(state.tokens, state.fabledLorics).map(id => {
+                    const character = getCharacter(id)
                     if (!character) return null
                     return (
-                        <li key={token.id}>
+                        <li key={id}>
                             <strong>{character.name}: </strong>
                             {character.otherNightInstruction}
                         </li>
