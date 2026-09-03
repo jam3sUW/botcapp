@@ -2,11 +2,12 @@ import { useCallback, useRef, useState } from "react"
 import Modal from "./Modal"
 import type { GrimAction, GrimState } from "./Grimoire"
 import DisplayToken from "./DisplayToken"
-import { getCharacterTypeCounts, getScriptCharacterTypes } from "./Scripts"
+import { type CharacterTypeCount, getCharacterTypeCounts, getScriptCharacterTypes, type ScriptCharacterIdsByType } from "./Scripts"
 import "./CharacterSetup.css"
 import { getCharacter, type CharacterType } from "./Characters"
+import { nRandom } from "./Utils"
 
-function addAllSelected(dispatch : React.Dispatch<GrimAction>, state : GrimState) { /* TODO: make work with fabled/lorics */
+function addAllSelected(dispatch : React.Dispatch<GrimAction>, state : GrimState) {
     dispatch({
         type: "batch",
         actions: [
@@ -20,6 +21,20 @@ function addAllSelected(dispatch : React.Dispatch<GrimAction>, state : GrimState
             { type: "clearSelectedCharacterIds" },
         ]
     })
+}
+
+function selectRandom(dispatch: React.Dispatch<GrimAction>, options: ScriptCharacterIdsByType, counts: CharacterTypeCount) {
+    console.log("okay okay")
+    dispatch({ type: "clearSelectedCharacterIds"} )
+    const randomIds = [
+        ...nRandom(options.townsfolk, counts.townsfolk),
+        ...nRandom(options.outsider, counts.outsider),
+        ...nRandom(options.minion, counts.minion),
+        ...nRandom(options.demon, counts.demon),
+    ]
+    randomIds.forEach(id => (
+        dispatch({ type: "toggleSelectedCharacterId", characterId: id })
+    ))
 }
 
 function getSelectedTypeCounts(state: GrimState) : Record<"townsfolk" | "outsider" | "minion" | "demon", number> {
@@ -107,8 +122,9 @@ function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAct
                     <button disabled={state.selectedCharacterIds.length == 0} onClick={() => {
                         setOpen(false)
                         addAllSelected(dispatch, state) 
-                    }}>Add all</button> {/* Minor visual glitch, unselection upon closing popup */}
+                    }}>Add all</button>
                     <button onClick={() => dispatch({ type: "clearSelectedCharacterIds" })}>Clear</button>
+                    <button onClick={() => selectRandom(dispatch, characterIdsByType, expectedCounts)}>Random</button>
                 </div>
                 <div>
                 </div>

@@ -29,7 +29,7 @@ export function loadScript(data: any[]) : Script {
     return {name: name, author: author, bootlegger: bootlegger, characterIds: charIds}
 }
 
-interface CharacterTypeCount {
+export interface CharacterTypeCount {
     townsfolk: number,
     outsider: number,
     minion: number,
@@ -55,7 +55,7 @@ export function getCharacterTypeCounts(playerCount: number) : CharacterTypeCount
     return CHARACTER_TYPE_COUNTS[playerCount]!
 }
 
-interface ScriptCharacterIdsByType {
+export interface ScriptCharacterIdsByType {
     townsfolk: string[],
     outsider: string[],
     minion: string[],
