@@ -30,9 +30,9 @@ export default function ScriptLoader({ dispatch }: ScriptLoaderProps) {
 
     return (
         <div>
-            <button onClick={() => dispatch({ type: "setScript", "script": officalScripts.tb })}>Trouble Brewing</button>
-            <button onClick={() => dispatch({ type: "setScript", "script": officalScripts.bmr })}>Bad Moon Rising</button>
-            <button onClick={() => dispatch({ type: "setScript", "script": officalScripts.snv })}>Sects and Violets</button>
+            {Object.values(officalScripts).map(script => (
+                <button key={script.name} onClick={() => dispatch({ type: "setScript", "script": script })}>{script.name}</button>
+            ))}
             <input type="file" accept=".json" onChange={handleFileUpload} />
             {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
