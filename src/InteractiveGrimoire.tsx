@@ -8,6 +8,7 @@ import PlayerToken from "./PlayerToken";
 import { getInPlayJinxes } from "./Jinxes";
 import "./InteractiveGrimoire.css"
 import CharacterSetup from "./CharacterSetup";
+import TokenAdder from "./TokenAdder";
 
 function InteractiveGrimoire() {
     const [{ present: state, past, future }, dispatch] = useReducer(historyReducer, { past: [], present: generateInitialGrimState(), future: []})
@@ -24,18 +25,9 @@ function InteractiveGrimoire() {
 
             <ScriptLoader dispatch={dispatch}/>
 
-            <CharacterSetup dispatch={dispatch} state={state}></CharacterSetup>
+            <CharacterSetup dispatch={dispatch} state={state}/>
 
-            <button onClick={() => dispatch({ type: "addToken", id: crypto.randomUUID(), characterId: chosenChar, name: chosenName })}>Add token</button>
-            <select value={chosenChar} onChange={(e) => setChosenChar(e.target.value)}>
-                <option value="" disabled>Select a character...</option>
-                {state.script.characterIds.map(id => getCharacter(id)).filter((character): character is Character => character != undefined && character.characterType != "fabled" && character.characterType != "loric").map(character =>
-                    <option key={character.id} value={character.id}>
-                        {character.name}
-                    </option>
-                )}
-            </select>
-            <input type="text" placeholder="Name..." value={chosenName} onChange={(e) => setChosenName(e.target.value)}/>
+            <TokenAdder dispatch={dispatch} state={state}/>
 
             <button onClick={() => dispatch({ type: "clear"})}>Clear</button>
             
