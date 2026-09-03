@@ -89,17 +89,17 @@ function InteractiveGrimoire() {
            <br/>
             <select value={chosenFabledLoric} onChange={(e) => setChosenFabledLoric(e.target.value)}>
                 <option value="" disabled>Select a Fabled/Loric...</option>
-                {fabledLorics.filter(fabledLoric => !state.fabledLorics.includes(fabledLoric)).map(name =>
-                    <option key={name} value={name}>
-                        {name}
+                {fabledLorics.filter(fabledLoric => !state.fabledLorics.includes(fabledLoric)).map(id =>
+                    <option key={id} value={id}>
+                        {getCharacter(id)!.name}
                     </option>
                 )}
             </select>
             <ul>
-                {state.fabledLorics.map(fabledLoric => (
-                    <li key={fabledLoric}>
-                        {fabledLoric}
-                        <button onClick={() => dispatch({ type: "removeFabledLoric", characterId: fabledLoric })}>Remove</button>
+                {state.fabledLorics.map(id => (
+                    <li key={id}>
+                        {getCharacter(id)!.name}
+                        <button onClick={() => dispatch({ type: "removeFabledLoric", characterId: id })}>Remove</button>
                     </li>
                 ))}
             </ul>
