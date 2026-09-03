@@ -16,8 +16,6 @@ function Modal({ children, onClose, open, className } : ModalProps) {
         if (open) {
             setRendered(true)
         }
-
-
     }, [open])
 
     const root = document.getElementById("modal-root")
