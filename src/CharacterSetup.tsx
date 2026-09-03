@@ -10,11 +10,13 @@ function addAllSelected(dispatch : React.Dispatch<GrimAction>, state : GrimState
     dispatch({
         type: "batch",
         actions: [
-            ...state.selectedCharacterIds.map(id => ({
-                type: "addToken" as const,
-                id: crypto.randomUUID(),
-                characterId: id
-            })),
+            ...state.selectedCharacterIds.map(id => {
+                if (getCharacter(id)!.characterType === "fabled" || getCharacter(id)!.characterType === "loric") {
+                    return { type: "addFabledLoric" as const, characterId: getCharacter(id)!.name }
+                } else {
+                    return { type: "addToken" as const, id: crypto.randomUUID(), characterId: id }
+                }
+            }),
             { type: "clearSelectedCharacterIds" },
         ]
     })
@@ -44,7 +46,7 @@ function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAct
     const ids = characterIdsByType[chosenType]
     const { top, bottom } = ids.length > 2 ? rows(ids) : { top: ids, bottom: []}
     const counts = getSelectedTypeCounts(state)
-    const expectedCounts = getCharacterTypeCounts(state.expectedPlayerCount) /* TODO: Change with expected player count */
+    const expectedCounts = getCharacterTypeCounts(state.expectedPlayerCount)
     const [containerWidth, setContainerWidth]  = useState(0)
     const observerRef = useRef<ResizeObserver | null>(null)
 
@@ -92,9 +94,9 @@ function CharacterSetup({ dispatch, state } : { dispatch: React.Dispatch<GrimAct
                 </div>
                 <div> {/* TODO: fix button colors */}
                     <button onClick={() => setType("townsfolk")}>Townsfolk {counts.townsfolk}/{expectedCounts.townsfolk}</button>
-                    <button onClick={() => setType("outsider")}>Outsiders {counts.outsider}/{expectedCounts.outsiders}</button>
-                    <button onClick={() => setType("minion")}>Minions {counts.minion}/{expectedCounts.minions}</button>
-                    <button onClick={() => setType("demon")}>Demons {counts.demon}/{expectedCounts.demons}</button>
+                    <button onClick={() => setType("outsider")}>Outsiders {counts.outsider}/{expectedCounts.outsider}</button>
+                    <button onClick={() => setType("minion")}>Minions {counts.minion}/{expectedCounts.minion}</button>
+                    <button onClick={() => setType("demon")}>Demons {counts.demon}/{expectedCounts.demon}</button>
                 </div>
                 <div>
                     {characterIdsByType["traveller"].length !== 0 && <button onClick={() => setType("traveller")}>Travellers</button>}
