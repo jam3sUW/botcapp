@@ -136,6 +136,9 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
         case "removeBluffSet":
             return { ...state, bluffSets: state.bluffSets.filter(bluffSet => bluffSet.id != action.id) }
         case "addFabledLoric":
+            if (state.fabledLorics.includes(action.characterId)) {
+                return state
+            }
             return { ...state, fabledLorics: [ ...state.fabledLorics, action.characterId]}
         case "removeFabledLoric":
             return { ...state, fabledLorics: state.fabledLorics.filter(fabledLoric => fabledLoric != action.characterId) }

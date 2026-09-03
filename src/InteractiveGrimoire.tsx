@@ -10,6 +10,7 @@ import "./InteractiveGrimoire.css"
 import CharacterSetup from "./CharacterSetup";
 import TokenAdder from "./TokenAdder";
 import TravellerAdder from "./TravellerAdder";
+import FabledLoricAdder from "./FabledLoricAdder";
 
 function InteractiveGrimoire() {
     const [{ present: state, past, future }, dispatch] = useReducer(historyReducer, { past: [], present: generateInitialGrimState(), future: []})
@@ -23,12 +24,15 @@ function InteractiveGrimoire() {
             <button disabled={future.length === 0} onClick={() => { dispatch({ type: "redo" }) }}>Redo</button>
 
             <ScriptLoader dispatch={dispatch}/>
-
+            <p>{state.script.name}</p>
+            
             <CharacterSetup dispatch={dispatch} state={state}/>
 
             <TokenAdder dispatch={dispatch} state={state}/>
             
             <TravellerAdder dispatch={dispatch} state={state}/>
+
+            <FabledLoricAdder dispatch={dispatch} state={state}/>
 
             <button onClick={() => dispatch({ type: "clear"})}>Clear</button>
             
@@ -74,28 +78,19 @@ function InteractiveGrimoire() {
 
            <BluffManager dispatch={dispatch} state={state}/>
 
-           <h2>Fabled/Loric</h2>
-           <button disabled={chosenFabledLoric === ""} onClick={() => {
-                dispatch({ type: "addFabledLoric", characterId: chosenFabledLoric});
-                setChosenFabledLoric("")
-            }}>Add Fabled/Loric</button>
-           <br/>
-            <select value={chosenFabledLoric} onChange={(e) => setChosenFabledLoric(e.target.value)}>
-                <option value="" disabled>Select a Fabled/Loric...</option>
-                {fabledLorics.filter(fabledLoric => !state.fabledLorics.includes(fabledLoric)).map(id =>
-                    <option key={id} value={id}>
-                        {getCharacter(id)!.name}
-                    </option>
-                )}
-            </select>
-            <ul>
-                {state.fabledLorics.map(id => (
-                    <li key={id}>
-                        {getCharacter(id)!.name}
-                        <button onClick={() => dispatch({ type: "removeFabledLoric", characterId: id })}>Remove</button>
-                    </li>
-                ))}
-            </ul>
+           {state.fabledLorics.length !== 0 &&
+                <>
+                    <h2>Fabled/Lorics</h2>
+                    <ul>
+                        {state.fabledLorics.map(id => (
+                            <li key={id}>
+                                {getCharacter(id)!.name}
+                                <button onClick={() => dispatch({ type: "removeFabledLoric", characterId: id })}>Remove</button>
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            }
 
             {inPlayJinxes.length > 0 && <div>
                 <h2>Jinxes</h2>
