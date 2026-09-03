@@ -1,6 +1,7 @@
 import type { GrimAction } from "./Grimoire";
 import React, { useState } from "react";
 import { loadScript } from "./Scripts";
+import officalScripts from "./data/scripts.json"
 
 interface ScriptLoaderProps {
     dispatch: React.Dispatch<GrimAction>
@@ -29,6 +30,9 @@ export default function ScriptLoader({ dispatch }: ScriptLoaderProps) {
 
     return (
         <div>
+            <button onClick={() => dispatch({ type: "setScript", "script": officalScripts.tb })}>Trouble Brewing</button>
+            <button onClick={() => dispatch({ type: "setScript", "script": officalScripts.bmr })}>Bad Moon Rising</button>
+            <button onClick={() => dispatch({ type: "setScript", "script": officalScripts.snv })}>Sects and Violets</button>
             <input type="file" accept=".json" onChange={handleFileUpload} />
             {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
