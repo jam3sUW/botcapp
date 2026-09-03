@@ -31,23 +31,23 @@ export function loadScript(data: any[]) : Script {
 
 interface CharacterTypeCount {
     townsfolk: number,
-    outsiders: number,
-    minions: number,
-    demons: number
+    outsider: number,
+    minion: number,
+    demon: number
 }
 
 const CHARACTER_TYPE_COUNTS: Record<number, CharacterTypeCount> = {
-    5: { townsfolk: 3, outsiders: 0, minions: 1, demons: 1 },
-    6: { townsfolk: 3, outsiders: 1, minions: 1, demons: 1 },
-    7: { townsfolk: 5, outsiders: 0, minions: 1, demons: 1 },
-    8: { townsfolk: 5, outsiders: 1, minions: 1, demons: 1 },
-    9: { townsfolk: 5, outsiders: 2, minions: 1, demons: 1 },
-    10: { townsfolk: 7, outsiders: 0, minions: 2, demons: 1 },
-    11: { townsfolk: 7, outsiders: 1, minions: 2, demons: 1 },
-    12: { townsfolk: 7, outsiders: 2, minions: 2, demons: 1 },
-    13: { townsfolk: 9, outsiders: 0, minions: 3, demons: 1 },
-    14: { townsfolk: 9, outsiders: 1, minions: 3, demons: 1 },
-    15: { townsfolk: 9, outsiders: 2, minions: 3, demons: 1 },
+    5: { townsfolk: 3, outsider: 0, minion: 1, demon: 1 },
+    6: { townsfolk: 3, outsider: 1, minion: 1, demon: 1 },
+    7: { townsfolk: 5, outsider: 0, minion: 1, demon: 1 },
+    8: { townsfolk: 5, outsider: 1, minion: 1, demon: 1 },
+    9: { townsfolk: 5, outsider: 2, minion: 1, demon: 1 },
+    10: { townsfolk: 7, outsider: 0, minion: 2, demon: 1 },
+    11: { townsfolk: 7, outsider: 1, minion: 2, demon: 1 },
+    12: { townsfolk: 7, outsider: 2, minion: 2, demon: 1 },
+    13: { townsfolk: 9, outsider: 0, minion: 3, demon: 1 },
+    14: { townsfolk: 9, outsider: 1, minion: 3, demon: 1 },
+    15: { townsfolk: 9, outsider: 2, minion: 3, demon: 1 },
 }
 
 export function getCharacterTypeCounts(playerCount: number) : CharacterTypeCount {
