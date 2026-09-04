@@ -128,6 +128,7 @@ export function grimActionReducer(state: GrimState, action: GrimAction): GrimSta
                 : token
             )}
         case "setScript":
+            if (state.script == action.script) return state
             return { ...state, script: action.script}
         case "addBluffSet":
             return { ...state, bluffSets: [ ...state.bluffSets, { id: action.id, characterIds: action.characterIds }]}

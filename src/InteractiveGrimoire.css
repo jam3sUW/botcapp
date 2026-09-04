@@ -4,3 +4,10 @@
     flex-direction: column;
     gap: 8px
 }
+
+.row {
+    display: flex;
+    gap: 2%;
+    align-items: center;
+    justify-content: center;
+}

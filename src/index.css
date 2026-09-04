@@ -146,6 +146,11 @@ option {
   color: black;
 }
 
+ul.unstyle {
+  list-style: none;
+  padding-inline-start: 0px
+}
+
 code,
 .counter {
   font-family: var(--mono);

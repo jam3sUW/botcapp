@@ -36,12 +36,14 @@ function InteractiveGrimoire() {
             <button onClick={() => dispatch({ type: "clear"})}>Clear</button>
             {hasTokens &&
                 <>
-                    <p>Players: {state.tokens.length}</p>
-                    <p>Alive: {aliveCount(state.tokens)}</p>
-                    <p>Available votes: {availableVotes(state.tokens)}</p>
-                    <p>Votes to condemn: {blockVotes(state.tokens)}</p>
-                    <p>Votes to exile: {exileVotes(state.tokens)}</p>
-
+                    <div className="row">
+                        <p>Players: {state.tokens.length}</p>
+                        <p>Alive: {aliveCount(state.tokens)}</p>
+                        <p>Available votes: {availableVotes(state.tokens)}</p>
+                        <p>Votes to condemn: {blockVotes(state.tokens)}</p>
+                        <p>Votes to exile: {exileVotes(state.tokens)}</p>
+                    </div>
+                    
                     <h2>Tokens (click each for options):</h2>
                     <ul className="token-list">
                         {sortedTokens.map(token => (
@@ -50,7 +52,7 @@ function InteractiveGrimoire() {
                     </ul>
                     
                     <h2>First night:</h2>
-                    <ul>
+                    <ul className="unstyle">
                         {firstNightOrder(state.tokens, state.fabledLorics).map(id => {
                             const character = getCharacter(id)
                             if (!character) return null
@@ -63,7 +65,7 @@ function InteractiveGrimoire() {
                         })}
                     </ul>
                     <h2>Other night:</h2>
-                    <ul>
+                    <ul className="unstyle">
                         {otherNightOrder(state.tokens, state.fabledLorics).map(id => {
                             const character = getCharacter(id)
                             if (!character) return null

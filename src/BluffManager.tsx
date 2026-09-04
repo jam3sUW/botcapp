@@ -12,7 +12,7 @@ export default function BluffManager({ dispatch, state }: BluffManagerProps) {
         <div>
              <button onClick={() => dispatch({ type: "addBluffSet", id: crypto.randomUUID(), characterIds: ["", "", ""] })}>Add bluffs</button>
             {state.bluffSets.map(bluffSet =>
-                <ul key={bluffSet.id}>
+                <ul key={bluffSet.id} className="unstyle">
                     <li key={bluffSet.id}>
                         {bluffSet.characterIds.map((characterId, index) => (
                                 <select key={index}
