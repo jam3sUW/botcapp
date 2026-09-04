@@ -55,22 +55,26 @@
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
 }
 
+html {
+  background-color: rgba(22, 23, 28, 1);;
+}
+
 body {
   margin: 0;
+  background-color: rgba(22, 23, 28, 1);
+  color: #DD7230;
 }
 
 h1,
 h2 {
   font-family: var(--heading);
   font-weight: 500;
-  color: var(--text-h);
 }
 
 h1 {
@@ -93,6 +97,53 @@ h2 {
 }
 p {
   margin: 0;
+}
+
+button {
+  color:#6096BA;
+  background-color: transparent;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #6096BA;
+  border-radius: 999px;
+  margin: 2px;
+  cursor: pointer
+}
+
+button:disabled {
+  border-color: grey;
+  color: grey;
+}
+
+input {
+  background-color: transparent;
+  border-style: solid;
+  box-sizing: border-box
+}
+
+input[type="file"]::file-selector-button {
+  background-color: transparent;
+  border-style: none;
+  color: #6096BA;
+  cursor: pointer;
+}
+
+input[type="number"] {
+  background-color: transparent;
+  border-color: #6096BA;
+  color: #6096BA;
+  cursor: pointer;
+}
+
+select {
+  background-color: transparent;
+  border-style: solid;
+  border-color: #6096BA;
+  color: #DD7230;
+}
+
+option {
+  color: black;
 }
 
 code,
