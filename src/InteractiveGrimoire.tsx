@@ -67,10 +67,10 @@ function InteractiveGrimoire() {
                     <h2>Other night:</h2>
                     <ul className="unstyle">
                         {otherNightOrder(state.tokens, state.fabledLorics).map(entry => {
-                            const character = getCharacter(entry.id)
+                            const character = getCharacter(entry.characterId)
                             if (!character) return null
                             return (
-                                <li key={entry.characterId}>
+                                <li key={entry.id}>
                                     <strong>{character.name}: </strong>
                                     {character.otherNightInstruction}
                                 </li>
