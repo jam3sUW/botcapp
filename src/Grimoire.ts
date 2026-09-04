@@ -45,16 +45,16 @@ export function exileVotes(tokens: Token[]) : number {
     return Math.ceil(tokens.length / 2)
 }
 
-export function firstNightOrder(tokens: Token[], currentFabledLorics: string[]) : string[] {
-    const wakingTokens = tokens.filter(actsOnFirstNight).map(token => token.characterId)
-    const wakingFabledLorics = currentFabledLorics.filter(id => getFirstNightOrder(id) !== undefined)
-    return [...wakingTokens, ...wakingFabledLorics].toSorted((a, b) => getFirstNightOrder(a)! - getFirstNightOrder(b)!)
+export function firstNightOrder(tokens: Token[], currentFabledLorics: string[]) : { id: string, characterId: string }[] {
+    const wakingTokens = tokens.filter(actsOnFirstNight).map(token => ({ id: token.id, characterId: token.characterId }))
+    const wakingFabledLorics = currentFabledLorics.filter(id => getFirstNightOrder(id) !== undefined).map(id => ({ id, characterId: id }))
+    return [...wakingTokens, ...wakingFabledLorics].toSorted((a, b) => getFirstNightOrder(a.characterId)! - getFirstNightOrder(b.characterId)!)
 }
 
-export function otherNightOrder(tokens: Token[], currentFabledLorics: string[]) : string[] {
-    const wakingTokens = tokens.filter(actsOnOtherNight).map(token => token.characterId)
-    const wakingFabledLorics = currentFabledLorics.filter(id => getOtherNightOrder(id) !== undefined)
-    return [...wakingTokens, ...wakingFabledLorics].toSorted((a, b) => getOtherNightOrder(a)! - getOtherNightOrder(b)!)
+export function otherNightOrder(tokens: Token[], currentFabledLorics: string[]) : { id: string, characterId: string }[] {
+    const wakingTokens = tokens.filter(actsOnOtherNight).map(token => ({ id: token.id, characterId: token.characterId }))
+    const wakingFabledLorics = currentFabledLorics.filter(id => getOtherNightOrder(id) !== undefined).map(id => ({ id, characterId: id }))
+    return [...wakingTokens, ...wakingFabledLorics].toSorted((a, b) => getOtherNightOrder(a.characterId)! - getOtherNightOrder(b.characterId)!)
 }
 
 export type GrimAction =
