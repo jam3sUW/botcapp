@@ -2,7 +2,9 @@
 
 A browser-based "Grimoire" (storyteller's tool) for running games of [Blood on the Clocktower](https://bloodontheclocktower.com/), built for my uni's BOTC club.
 
-**EXTREMELY work in progress.** Barely anything is done. Core state management and a functional token/script/bluff/reminder UI are working. Fancy stuff forthcoming...
+![Grimoire demo](public/Demo.gif)
+
+**Work in progress.** Core state management and a functional token/script/bluff/reminder UI are working. Fancy stuff forthcoming...
 
 ## Purpose
 
@@ -20,7 +22,7 @@ I wanted a grim tool optimized for local play with features other (excellent!) t
 ## Planned features
 
 - MAJOR UI OVERHAULS FOR EVERYTHING
-- Automatic role assignment
+- Pass 'n play role assignment
 - Step-by-step storyteller instructions and auto-resolution
 - Offline support as an installable PWA
 - Online support for co-storytelling
@@ -33,7 +35,7 @@ I wanted a grim tool optimized for local play with features other (excellent!) t
 
 ## Tech stack
 
-React, TypeScript, Vite. Character/script data vendored locally from [Pocket Grimoire](https://github.com/Skateside/pocket-grimoire)'s excellent dataset rather than fetched at runtime.
+React, TypeScript, Vite. Character/script data vendored locally from [TPI's offical community release](https://release.botc.app/resources/) rather than fetched at runtime.
 
 ## AI disclosure
 
