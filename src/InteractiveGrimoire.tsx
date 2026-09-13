@@ -10,6 +10,7 @@ import CharacterSetup from "./CharacterSetup";
 import TokenAdder from "./TokenAdder";
 import TravellerAdder from "./TravellerAdder";
 import FabledLoricAdder from "./FabledLoricAdder";
+import DemoPopup from "./DemoPopup";
 
 function InteractiveGrimoire() {
     const [{ present: state, past, future }, dispatch] = useReducer(historyReducer, { past: [], present: generateInitialGrimState(), future: []})
@@ -111,6 +112,8 @@ function InteractiveGrimoire() {
                     )})}
                 </ul>
             </div>}
+
+            <DemoPopup/>
         </div>
     )
 }

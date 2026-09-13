@@ -1,0 +1,21 @@
+.demo-modal {
+    width: 50%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2vh;
+}
+
+.demo-modal img {
+    max-height: 100%;
+    max-width: 60vh;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    border: 4px;
+    border-style: solid;
+    padding: 1vh;
+    border-color: darkgray
+}
